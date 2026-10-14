@@ -114,10 +114,9 @@ button:disabled { opacity: .45; cursor: default; }
 @media (min-width: 851px) {
   .lens-workspace:not(.photo-expanded) { grid-template-columns: minmax(0, var(--overview-track, 1fr)) minmax(0, var(--camera-track, 1fr)); }
   .lens-workspace:not(.photo-expanded) .view-splitter { display: block; grid-column: 1; grid-row: 1; justify-self: end; align-self: stretch; width: 12px; min-height: 0; transform: translateX(50%); position: relative; z-index: 4; cursor: col-resize; touch-action: none; }
-  .view-splitter::before { content: ''; position: absolute; inset: 0 5px; background: #a8b6a8; }
-  .view-splitter::after { content: ''; position: absolute; width: 4px; height: 34px; top: calc(50% - 17px); left: 4px; border-radius: 3px; background: #f4f4ed; box-shadow: 0 0 0 1px #526b5f; }
-  .view-splitter:hover::before, .view-splitter:focus-visible::before, .resizing-views .view-splitter::before { inset-inline: 3px; background: #46795e; }
-  .view-splitter:focus-visible { outline: 2px solid #46795e; outline-offset: -2px; }
+  .view-splitter::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: #a8b6a8; }
+  .view-splitter:focus { outline: none; }
+  .view-splitter:focus-visible::before { background: #20332b; }
   .resizing-views { cursor: col-resize; user-select: none; }
 }
 #overview-panel { grid-column: 1; grid-row: 1; height: auto; min-height: 0; aspect-ratio: 3/2; }
