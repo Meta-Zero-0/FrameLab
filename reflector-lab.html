@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FrameLab — reflector experiment</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f4ed;color:#20332b;font:14px 'Segoe UI',sans-serif}main{max-width:1300px;margin:auto;padding:16px}header{display:flex;align-items:center;justify-content:space-between;gap:16px}h1{font-size:22px}a{color:#35634d}.views{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.view{min-width:0;background:#dce3dc;border-radius:8px;overflow:hidden}.view h2{font-size:14px;margin:0;padding:10px}.view canvas{display:block;width:100%;height:340px}#fill{object-fit:contain;background:#151a17}.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}label{display:grid;gap:6px}input,select,button{font:inherit;max-width:100%}input[type=range]{width:100%;accent-color:#35634d}button,select{padding:7px;border:1px solid #a8b6a8;border-radius:5px;background:white}.note{font-size:13px;line-height:1.5}#metrics{font-variant-numeric:tabular-nums;padding:10px;background:#e8ecdf}output{font-weight:600}@media(max-width:750px){.views{grid-template-columns:1fr}.view canvas{height:260px}.controls{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<header><h1>White reflector experiment</h1><a href="/" target="_blank" rel="noopener">Open FrameLab</a></header>
+<p class="note">One-bounce diffuse-light calculation. The diagram shows the arrangement; the right view shows only light bounced from the white board onto a virtual measuring surface. No extra fill lamp is used.</p>
+<div class="views"><section class="view"><h2>Arrangement · drag to orbit</h2><canvas id="arrangement" aria-label="Reflector arrangement"></canvas></section><section class="view"><h2>Bounced fill · fixed display brightness</h2><canvas id="fill" width="320" height="320" aria-label="Computed bounced illumination"></canvas></section></div>
+<div class="controls">
+<label>Lamp output <output id="power-value"></output><input id="power" type="range" min="0" max="200" value="100" step="5"></label>
+<label>Board reflectance <output id="rho-value"></output><input id="rho" type="range" min="0" max="1" value="0.8" step="0.05"></label>
+<label>Board rotation <output id="yaw-value"></output><input id="yaw" type="range" min="-180" max="180" value="0" step="5"></label>
+<label>Board size <output id="size-value"></output><input id="size" type="range" min="0.25" max="2" value="1" step="0.05"></label>
+<label>Receiving distance <output id="distance-value"></output><input id="distance" type="range" min="0.5" max="4" value="2" step="0.1"></label>
+<label>Opaque blocker<select id="blocker"><option value="none">None</option><option value="incoming">Between lamp and board</option><option value="outgoing">Between board and receiver</option></select></label>
+<label>Board sampling<select id="samples"><option value="4">4 × 4 · quick</option><option value="8" selected>8 × 8</option><option value="16">16 × 16</option><option value="32">32 × 32 · reference check</option></select></label>
+<label>Blocker sideways <output id="offset-value"></output><input id="offset" type="range" min="-1.5" max="1.5" value="0" step="0.05"></label>
+</div>
+<p id="metrics" role="status">Calculating…</p><p id="error" role="alert" hidden></p>
+<details><summary>What to try and what this proves</summary><p class="note">Turn lamp output or reflectance to zero: fill disappears. Rotate the board away: fill disappears. Move a blocker across either path: fill decreases or becomes uneven. Increase sampling to check whether the pattern stabilises. Brightness is fixed, so darkening is not cancelled by automatic exposure.</p><p class="note">The readout measures CPU calculation time, not GPU frame time. This pilot uses an ideal diffuse white board, point spotlight and opaque box blockers. The receiver is a virtual measurement plane, not a solid subject. It does not yet support arbitrary models, silver/gold materials, further bounces, or a path-traced reference. Coarse samples can cause banding near blockers. Not a calibrated exposure prediction.</p></details>
+<script type="module" src="/src/experiments/reflectorLab.js"></script></main></body></html>

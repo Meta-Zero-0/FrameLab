@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.npm-cache/
+tmp/
+.env
+.env.*
+!.env.example
+chathistory.md
+tmp-*
+.vscode/
+*.framelab

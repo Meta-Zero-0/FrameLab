@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#182723" />
+  <title>FrameLab - Lens and distance</title>
+</head>
+<body>
+  <main class="app">
+    <header class="header"><h1><img class="brand-logo" src="./framelab-logo.svg" alt="FrameLab" width="138" height="32" /></h1><div class="setup-actions"><button id="save-setup" type="button">Save setup</button><button id="open-setup" type="button">Open setup</button><input id="setup-file" type="file" accept=".json,.framelab,application/json" hidden /><button id="reset-all" type="button">Reset all</button></div></header><p id="setup-status" role="status" class="guide-note"></p>
+    <p id="scene-error" role="alert" hidden></p>
+    <div class="workspace lens-workspace">
+      <section id="overview-panel" class="viewport" aria-label="Studio overview">
+        <div class="viewport-label"><span class="dot"></span> Studio overview</div>
+        <canvas id="scene" aria-label="Interactive overview of the shared scene"></canvas><div id="reference-labels" aria-hidden="true"></div>
+        <div class="viewport-footer"><span>Drag to orbit / Scroll to zoom · Grid: 1 m</span><button id="reset-view" type="button">Reset view</button></div>
+      </section>
+      <section class="photo-panel" aria-label="Camera workspace">
+        <div id="photo-frame">
+          <canvas id="photo" aria-label="Full frame camera view, 3:2 aspect ratio"></canvas>
+          <div class="viewport-label"><span class="dot"></span>Full frame view</div>
+          <button id="expand-photo" class="view-icon" type="button" aria-label="Expand full frame view" title="Expand full frame view" aria-expanded="false" aria-controls="photo-frame">
+            <svg class="expand-symbol" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg>
+            <svg class="collapse-symbol" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 8h5V3M21 8h-5V3M8 21v-5H3M16 21v-5h5"/></svg>
+          </button>
+        </div>
+        <div class="control-deck">
+        <section class="subject-controls" aria-label="Subject">
+          <h3>Subject</h3>
+          <label for="subject-type">Model</label>
+          <select id="subject-type"><option value="cube">Learning cube</option><option value="product">Product / bottle</option><option value="human">Human / mannequin</option><option id="import-option" value="import" disabled>Imported GLB</option></select>
+          <div id="human-options" hidden>
+            <label for="subject-pose">Pose</label><select id="subject-pose"><option value="standing">Standing</option><option value="arms-out">Arms out</option><option value="seated">Seated</option></select>
+            <label for="subject-region">Frame</label><select id="subject-region"><option value="full">Full body</option><option value="shoulders">Head and shoulders</option><option value="head">Headshot</option></select>
+            <details class="control-help"><summary>Mannequin details</summary><p class="guide-note">A simple mannequin for composition. Seated pose has no chair; facial detail and joint editing come later.</p></details>
+          </div>
+          <details><summary>Size and placement</summary><div class="subject-fields">
+            <label>Height (m)<input id="subject-height" type="number" min="0.05" max="3" step="0.001" value="1"></label>
+            <label>Left / right (m)<input id="subject-x" type="number" min="-4" max="4" step="0.01" value="0"></label>
+            <label>Front / back (m)<input id="subject-z" type="number" min="-4" max="4" step="0.01" value="0"></label>
+
+          </div></details>
+          <div class="rotation-control"><label for="subject-rotation">Subject rotation</label><input id="subject-rotation" type="range" min="-180" max="180" step="1" value="0" /><label class="numeric-control">Degrees<input id="subject-yaw" type="number" min="-180" max="180" step="1" value="0" /></label></div>
+          <button id="fit-subject" type="button">Frame and focus subject</button>
+          <details><summary>Import your own GLB</summary><label for="subject-file">Choose a model</label><input id="subject-file" type="file" accept=".glb" /><details class="control-help"><summary>GLB requirements</summary><p class="guide-note">Local only: nothing is uploaded. Up to 50 MB, embedded textures, without Draco / Meshopt / KTX2 compression. Imports use a static pose.</p></details></details>
+          <p id="subject-status" class="guide-note" role="status">Size, placement and rotation update the subject live. Use Frame and focus subject to recompose.</p>
+        </section>
+        <section class="camera-controls" aria-label="Lens and distance"><h3>Lens and distance</h3><label>Orientation <select id="camera-orientation" data-help="Rotate the full-frame sensor between landscape (36 × 24 mm) and portrait (24 × 36 mm). Camera position and focal length stay unchanged. Use Frame and focus subject if you want to recompose."><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label><div class="lens-heading"><label for="focal-length">Focal length</label><output id="focal-value" for="focal-length">50 mm</output></div>
+        <label class="numeric-control">Focal length (mm)<input id="focal-number" type="number" min="18" max="200" step="1" value="50" /></label>
+        <input id="focal-length" type="range" min="18" max="200" step="1" value="50" />
+        <div class="range-labels"><span>18 mm / Wide</span><span>200 mm / Telephoto</span></div>
+        <div class="presets" aria-label="Focal length presets"><button data-focal="18">18 mm</button><button data-focal="24">24 mm</button><button data-focal="35">35 mm</button><button data-focal="50">50 mm</button><button data-focal="85">85 mm</button><button data-focal="100">100 mm</button><button data-focal="135">135 mm</button><button data-focal="200">200 mm</button></div>
+        <div class="framing-control"><label><input id="maintain-framing" type="checkbox" /> Maintain framing</label><p id="framing-status" role="status">Off: lens and distance work independently.</p></div>
+        <div class="lens-heading"><label for="camera-distance">Distance to target</label><output id="distance-value" for="camera-distance"></output></div>
+        <label class="numeric-control">Camera distance (m)<input id="distance-number" type="number" min="0.5" max="40" step="0.01" value="5.05" /></label>
+        <input id="camera-distance" type="range" min="0.5" max="40" step="0.01" value="5.05" />
+        <div class="range-labels"><span>0.5 m / Near</span><span>40 m / Far</span></div>
+        <label class="numeric-control">Camera height (m)<input id="camera-height-number" type="number" min="0" max="10" step="0.01" value="1.2" /></label>
+        <input id="camera-height" aria-label="Camera height" type="range" min="0" max="10" step="0.01" value="1.2" />
+        <label class="numeric-control">Camera tilt (°)<input id="camera-tilt-number" type="number" min="-85" max="85" step="0.1" value="-8" /></label>
+        <input id="camera-tilt" aria-label="Camera tilt" type="range" min="-85" max="85" step="0.1" value="-8" />
+        <div class="range-labels"><span>Down</span><span>0° / Level</span><span>Up</span></div>
+        
+        <details class="control-help"><summary>Camera guide explained</summary><p class="guide-note">Blue camera and lines: overview guides only. The lines end at the target plane; they do not show depth of field.</p></details>
+        <dl><div><dt>Sensor</dt><dd id="sensor-dimensions">36 × 24 mm</dd></div><div><dt>Vertical field of view</dt><dd id="vertical-fov"></dd></div><div><dt>Camera movement</dt><dd>Along viewing direction</dd></div></dl>
+</section>
+        <section class="focus-controls" aria-label="Focus and aperture">
+          <h3>Focus and aperture</h3>
+          <div class="lens-heading"><label for="focus-distance">Focus distance</label><output id="focus-value" for="focus-distance"></output></div>
+          <label class="numeric-control">Focus distance (m)<input id="focus-number" type="number" min="0.5" max="60" step="0.01" value="5.05" /></label>
+          <input id="focus-distance" type="range" min="0.5" max="60" step="0.01" value="5.05" />
+          <p><label><input id="follow-focus" type="checkbox" /> Follow subject focus</label></p>
+          <button id="focus-target" type="button">Focus at target</button>
+          <details class="control-help"><summary>Focus modes</summary><p class="guide-note">Follow subject keeps focus on the selected framing target as the camera moves. Turn it off to set focus manually; Focus at target refocuses once.</p></details>
+          <label for="aperture">Aperture</label>
+          <select id="aperture"><option value="1.4">f/1.4</option><option value="2">f/2</option><option value="2.8" selected>f/2.8</option><option value="4">f/4</option><option value="5.6">f/5.6</option><option value="8">f/8</option><option value="11">f/11</option><option value="16">f/16</option></select>
+          <p><label><input id="visual-blur" type="checkbox" checked /> Show approximate blur</label></p>
+                    
+          <dl><div><dt>Near sharp limit</dt><dd id="dof-near"></dd></div><div><dt>Far sharp limit</dt><dd id="dof-far"></dd></div><div><dt>Depth of field</dt><dd id="dof-total"></dd></div><div><dt>Hyperfocal distance</dt><dd id="hyperfocal"></dd></div></dl><details class="control-help"><summary>Hyperfocal explained</summary><p class="guide-note">Hyperfocal distance is the focus distance used to extend acceptable sharpness approximately from half that distance to infinity. It depends on the lens, aperture and sharpness criterion, not the current focus setting.</p></details>
+          <details class="control-help"><summary>Blur and sharpness</summary><p class="guide-note">Depth-of-field readings use a full-frame sensor and 0.03 mm circle of confusion. Visible blur is an artistic approximation; aperture does not change exposure here.</p></details>
+        </section>
+<section class="guide-section" aria-label="Overview guides"><fieldset class="guide-controls"><legend>Overview guides</legend>
+            <label><input id="show-grid" type="checkbox" checked /> Floor grid — 1 m squares</label>
+            <label><input id="show-camera-guides" type="checkbox" checked /><span class="guide-key camera-key"></span> Camera and field of view</label>
+            <label><input id="show-focus-plane" type="checkbox" checked /><span class="guide-key focus-key"></span> Focus plane</label>
+            <label><input id="show-dof-guides" type="checkbox" /><span class="guide-key dof-key"></span> Near and far sharpness limits</label>
+            <details class="control-help"><summary>Guide colours</summary><p class="guide-note">Amber is the focus distance. The space between the green outlines is the calculated acceptable sharpness range; sharpness changes gradually, not at a hard edge.</p></details>
+            <p id="dof-guide-status" class="guide-note" role="status"></p>
+          </fieldset></section><section class="scene-references" aria-label="Scene references"><h3>Scene references</h3><label><input id="show-prop-labels" type="checkbox" checked /> Show prop labels</label><details class="control-help"><summary>Distance measurements</summary><p class="guide-note">Depths use object centres, measured along the photographic camera viewing direction. Subject means the centre of the whole selected model, not the focus plane. Toggles hide props in both views.</p></details><div id="reference-list"></div></section>
+</div>
+      </section>
+    </div>
+    <section class="comparison" aria-label="A/B comparison">
+      <h2>A/B comparison</h2>
+      <p>Capture A, change your setup, then capture B. These are still photographs with settings, not editable scene saves. Captures last until cleared, Reset all, or page reload. Reset all restores the starting scene and controls.</p>
+      <button id="clear-comparison" type="button">Clear comparison</button>
+      <p id="comparison-status" role="status">Ready to capture.</p>
+      <div class="comparison-grid">        <article id="capture-A"><h3>Shot A</h3><div class="capture-actions"><button data-capture type="button">Capture A</button><button data-download type="button" disabled>Download A PNG</button><button data-clear type="button" disabled>Clear A</button></div><img alt="Captured photograph A" hidden /><p class="capture-summary"></p><details hidden><summary>Captured settings</summary><dl></dl></details></article>        <article id="capture-B"><h3>Shot B</h3><div class="capture-actions"><button data-capture type="button">Capture B</button><button data-download type="button" disabled>Download B PNG</button><button data-clear type="button" disabled>Clear B</button></div><img alt="Captured photograph B" hidden /><p class="capture-summary"></p><details hidden><summary>Captured settings</summary><dl></dl></details></article></div></section>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
