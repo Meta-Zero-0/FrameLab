@@ -134,21 +134,28 @@ try {
   });
   updateLens();
   const orientation = document.querySelector('#camera-orientation');
-  function setOrientation(value) {
+  const aspectRatio = document.querySelector('#camera-aspect');
+  function setOrientation(value, ratio = aspectRatio.value) {
+    aspectRatio.value = ratio;
+    photo.camera.userData.aspectRatio = ratio;
     orientation.value = value;
     photo.camera.userData.orientation = value;
     applyLens(photo.camera, Number(focalLength.value));
     const frame = document.querySelector('#photo-frame');
     frame.style.aspectRatio = String(photo.camera.aspect);
     frame.dataset.orientation = value;
+    frame.style.setProperty('--frame-aspect', String(photo.camera.aspect));
     document.querySelector('#sensor-dimensions').textContent = value === 'portrait' ? '24 × 36 mm' : '36 × 24 mm';
-    document.querySelector('#photo').setAttribute('aria-label', 'Full frame camera view, ' + (value === 'portrait' ? '2:3 portrait' : '3:2 landscape'));
+    const displayedRatio = value === 'portrait' ? ratio.split(':').reverse().join(':') : ratio;
+    document.querySelector('#camera-view-label').textContent = 'Camera view · ' + displayedRatio;
+    document.querySelector('#photo').setAttribute('aria-label', 'Camera view, ' + displayedRatio + ' ' + value);
     photo.resize(frame.clientWidth);
     guides.update(); focusControls.update();
     document.querySelector('#vertical-fov').textContent = photo.camera.fov.toFixed(1) + ' degrees';
     if (maintain.checked) captureFraming();
   }
   orientation.addEventListener('change', () => setOrientation(orientation.value));
+  aspectRatio.addEventListener('change', () => setOrientation(orientation.value));
 
   connectSubjectControls(subjects, (change = {}) => {
     if (change.placement) {
@@ -187,7 +194,7 @@ try {
       select.selectedIndex = Math.max(0, Array.from(select.options).findIndex(option => option.defaultSelected));
     }
     document.querySelector('#subject-type').dispatchEvent(new Event('change'));
-    setOrientation('landscape');
+    setOrientation('landscape', '3:2');
     travel.setTilt(travel.initialTilt);
     travel.target.set(...sceneLayout.photoView.target);
     distance.value = travel.initialDistance.toFixed(2);
@@ -203,11 +210,11 @@ try {
 
   function capturePlanGeometry(){const bounds=new Box3().setFromObject(subject);return {min:bounds.min.toArray(),max:bounds.max.toArray(),aim:subjects.bounds().getCenter(new Vector3()).toArray(),camera:photo.camera.position.toArray()};}
   const setupFiles=connectSetupFiles({subjects,
-    snapshot:()=>({planGeometry:capturePlanGeometry(),flags:blackFlag.snapshotAll(),reflectors:meshReflector.snapshotAll(),blackFlag:blackFlag.snapshot(),cameraTilt:travel.getTilt(),reflector:meshReflector.snapshot(),orientation:orientation.value,studio:studio.snapshot(),target:travel.target.toArray(),lights:lighting.snapshot(),markers:document.querySelector('#light-marker').checked,props:props.map(p=>p.visible),lock:(lock.snapshot().occupancy ? lock.snapshot() : (lock.capture(Number(focalLength.value),Number(distance.value)),lock.snapshot())),overview:{position:overview.camera.position.toArray(),target:overview.controls.target.toArray()}}),
+    snapshot:()=>({planGeometry:capturePlanGeometry(),flags:blackFlag.snapshotAll(),reflectors:meshReflector.snapshotAll(),blackFlag:blackFlag.snapshot(),cameraTilt:travel.getTilt(),reflector:meshReflector.snapshot(),orientation:orientation.value,aspectRatio:aspectRatio.value,studio:studio.snapshot(),target:travel.target.toArray(),lights:lighting.snapshot(),markers:document.querySelector('#light-marker').checked,props:props.map(p=>p.visible),lock:(lock.snapshot().occupancy ? lock.snapshot() : (lock.capture(Number(focalLength.value),Number(distance.value)),lock.snapshot())),overview:{position:overview.camera.position.toArray(),target:overview.controls.target.toArray()}}),
     restore(data) {
       studio.restore(data.studio);
       maintain.checked=false;
-      setOrientation(data.orientation);
+      setOrientation(data.orientation, data.aspectRatio || '3:2');
       for(const id of ['subject-type','subject-pose','subject-region']) document.getElementById(id).value=data.fields[id];
       document.querySelector('#subject-type').dispatchEvent(new Event('change'));
       for(const [id,value] of Object.entries(data.fields)) { const el=document.getElementById(id);if(el.type==='checkbox')el.checked=value;else el.value=value; }
@@ -232,7 +239,7 @@ try {
     const field=id=>document.getElementById(id).value;
     return {
       title:setupFiles.activeShotName(),notes:setupFiles.notes(),date:new Date().toLocaleString('en-GB'),studio:studio.snapshot(),
-      camera:{position:photo.camera.position.toArray(),target:travel.target.toArray(),focal:Number(field('focal-length')),orientation:orientation.value,aperture:field('aperture'),focus:Number(field('focus-distance')),tilt:travel.getTilt(),distance:photo.camera.position.distanceTo(travel.target)},
+      camera:{position:photo.camera.position.toArray(),target:travel.target.toArray(),focal:Number(field('focal-length')),orientation:orientation.value,aspectRatio:aspectRatio.value,aperture:field('aperture'),focus:Number(field('focus-distance')),tilt:travel.getTilt(),distance:photo.camera.position.distanceTo(travel.target)},
       subject:{name:document.querySelector('#subject-type').selectedOptions[0].textContent,min:bounds.min.toArray(),max:bounds.max.toArray(),yaw:field('subject-yaw')},
       aim:subjects.bounds().getCenter(new Vector3()).toArray(),lights:lighting.snapshot(),supports:lighting.equipmentReports(),
       reflectors:meshReflector.snapshotAll(),flags:blackFlag.snapshotAll()

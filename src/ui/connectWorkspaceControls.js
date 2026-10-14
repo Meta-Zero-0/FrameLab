@@ -9,7 +9,7 @@ export function connectWorkspaceControls() {
     workspace.classList.toggle('photo-expanded', expanded);
     overview.hidden = expanded;
     button.setAttribute('aria-expanded', String(expanded));
-    const label = expanded ? 'Return to split view' : 'Expand full frame view';
+    const label = expanded ? 'Return to split view' : 'Expand camera view';
     button.setAttribute('aria-label', label);
     button.title = label;
     button.focus({ preventScroll: true });

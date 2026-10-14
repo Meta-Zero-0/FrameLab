@@ -18,9 +18,9 @@
       </section>
       <section class="photo-panel" aria-label="Camera workspace">
         <div id="photo-frame">
-          <canvas id="photo" aria-label="Full frame camera view, 3:2 aspect ratio"></canvas>
-          <div class="viewport-label"><span class="dot"></span>Full frame view</div>
-          <button id="expand-photo" class="view-icon" type="button" aria-label="Expand full frame view" title="Expand full frame view" aria-expanded="false" aria-controls="photo-frame">
+          <canvas id="photo" aria-label="Camera view, 3:2 aspect ratio"></canvas>
+          <div class="viewport-label"><span class="dot"></span><span id="camera-view-label">Camera view · 3:2</span></div>
+          <button id="expand-photo" class="view-icon" type="button" aria-label="Expand camera view" title="Expand camera view" aria-expanded="false" aria-controls="photo-frame">
             <svg class="expand-symbol" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg>
             <svg class="collapse-symbol" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 8h5V3M21 8h-5V3M8 21v-5H3M16 21v-5h5"/></svg>
           </button>
@@ -46,7 +46,7 @@
           <details><summary>Import your own GLB</summary><label for="subject-file">Choose a model</label><input id="subject-file" type="file" accept=".glb" /><details class="control-help"><summary>GLB requirements</summary><p class="guide-note">Local only: nothing is uploaded. Up to 50 MB, embedded textures, without Draco / Meshopt / KTX2 compression. Imports use a static pose.</p></details></details>
           <p id="subject-status" class="guide-note" role="status">Size, placement and rotation update the subject live. Use Frame and focus subject to recompose.</p>
         </section>
-        <section class="camera-controls" aria-label="Lens and distance"><h3>Lens and distance</h3><label>Orientation <select id="camera-orientation" data-help="Rotate the full-frame sensor between landscape (36 × 24 mm) and portrait (24 × 36 mm). Camera position and focal length stay unchanged. Use Frame and focus subject if you want to recompose."><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label><div class="lens-heading"><label for="focal-length">Focal length</label><output id="focal-value" for="focal-length">50 mm</output></div>
+        <section class="camera-controls" aria-label="Lens and distance"><h3>Lens and distance</h3><label>Orientation <select id="camera-orientation" data-help="Rotate the camera between landscape and portrait. Camera position and focal length stay unchanged. Use Frame and focus subject if you want to recompose."><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label><label class="select-row">Aspect ratio <select id="camera-aspect" data-help="Crop the full-frame sensor to the delivery format. Lens perspective stays unchanged. Portrait reverses the ratio."><option value="3:2">3:2</option><option value="4:3">4:3</option><option value="16:9">16:9</option><option value="1:1">1:1</option></select></label><div class="lens-heading"><label for="focal-length">Focal length</label><output id="focal-value" for="focal-length">50 mm</output></div>
         <label class="numeric-control">Focal length (mm)<input id="focal-number" type="number" min="18" max="200" step="1" value="50" /></label>
         <input id="focal-length" type="range" min="18" max="200" step="1" value="50" />
         <div class="range-labels"><span>18 mm / Wide</span><span>200 mm / Telephoto</span></div>

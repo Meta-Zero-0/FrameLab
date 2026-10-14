@@ -16,6 +16,7 @@ export function validateSetup(data) {
  const planGeometry=validatePlanGeometry(data.planGeometry);
  const flags=validateEquipment(data.flags,'flag',data.blackFlag),reflectors=validateEquipment(data.reflectors,'reflector',data.reflector);
  if(data.cameraTilt!==undefined&&(!Number.isFinite(data.cameraTilt)||Math.abs(data.cameraTilt)>85))throw new Error('Invalid camera tilt.');
+ if(data.aspectRatio!==undefined&&!['3:2','4:3','16:9','1:1'].includes(data.aspectRatio))throw new Error('Invalid camera aspect ratio.');
  if(data.orientation!==undefined&&!['landscape','portrait'].includes(data.orientation))throw new Error('Invalid camera orientation.');
  if(data.studio!==undefined&&!validStudio(data.studio))throw new Error('Invalid studio dimensions or surface colours.');
  if(!data.fields || !data.lights || !vector(data.target) || !vector(data.overview?.position)||!vector(data.overview?.target)) throw new Error('Setup data is incomplete.');
@@ -38,7 +39,7 @@ export function validateSetup(data) {
  if(!Array.isArray(data.props)||data.props.length!==3||!data.props.every(v=>typeof v==='boolean')||typeof data.markers!=='boolean') throw new Error('Invalid visibility settings.');
  if(!Array.isArray(data.lock?.points)||data.lock.points.length!==8||!data.lock.points.every(vector)||!Number.isFinite(data.lock.occupancy)||data.lock.occupancy<=0) throw new Error('Invalid framing reference.');
  if(data.fields['subject-type']==='import' && (!data.model || typeof data.model.name!=='string'||typeof data.model.base64!=='string'||data.model.base64.length>70000000||!/^[A-Za-z0-9+/]*={0,2}$/.test(data.model.base64))) throw new Error('The imported GLB is missing or invalid.');
- return {...data,planGeometry,notes,flags,reflectors,blackFlag,reflector,orientation:data.orientation||'landscape',studio:{...defaultStudio,...data.studio},fields:Object.fromEntries(fieldIds.map(id=>[id,data.fields[id]])),lights:Object.fromEntries(['key','fill','hair','background'].map(name=>[name,data.lights[name]]))};
+ return {...data,planGeometry,notes,flags,reflectors,blackFlag,reflector,orientation:data.orientation||'landscape',aspectRatio:data.aspectRatio||'3:2',studio:{...defaultStudio,...data.studio},fields:Object.fromEntries(fieldIds.map(id=>[id,data.fields[id]])),lights:Object.fromEntries(['key','fill','hair','background'].map(name=>[name,data.lights[name]]))};
 }
 export function validateProject(data) {
  const current=validateSetup(data);

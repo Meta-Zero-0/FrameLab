@@ -4,7 +4,7 @@ export function connectComparison(photo, resetScene, lighting) {
   const status = document.querySelector('#comparison-status');
   const slots = new Map();
   const fields = [
-    ['camera-orientation','Orientation',''], ['focal-length','Lens',' mm'], ['camera-distance','Camera distance',' m'],
+    ['camera-orientation','Orientation',''], ['camera-aspect','Aspect ratio',''], ['focal-length','Lens',' mm'], ['camera-distance','Camera distance',' m'],
     ['camera-height','Camera height',' m'], ['camera-tilt','Camera tilt','°'], ['focus-distance','Focus distance',' m'], ['aperture','Aperture',''],
     ['subject-type','Subject',''], ['subject-pose','Pose',''], ['subject-region','Framing region',''],
     ['subject-height','Height',' m'], ['subject-x','Subject X',' m'], ['subject-z','Subject Z',' m'], ['subject-yaw','Rotation',' degrees'],

@@ -11,8 +11,13 @@ export function createPhotoCamera() {
   return camera;
 }
 export function applyLens(camera, focalLength) {
-  camera.aspect = camera.userData.orientation === 'portrait' ? 1 / SENSOR.aspect : SENSOR.aspect;
-  camera.filmGauge = SENSOR.width;
+  const ratios = { '3:2': 1.5, '4:3': 4/3, '16:9': 16/9, '1:1': 1 };
+  const ratio = ratios[camera.userData.aspectRatio] || SENSOR.aspect;
+  const width = Math.min(SENSOR.width, SENSOR.height * ratio);
+  const height = width / ratio;
+  camera.aspect = camera.userData.orientation === 'portrait' ? 1 / ratio : ratio;
+  // Three uses the longer film dimension; cropping must not enlarge the sensor.
+  camera.filmGauge = Math.max(width, height);
   camera.setFocalLength(focalLength);
   camera.updateProjectionMatrix();
 }

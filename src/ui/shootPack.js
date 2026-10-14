@@ -13,7 +13,7 @@ const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 function savedPlan(shot,date) {
   const s=shot.setup,f=s.fields,g=validatePlanGeometry(s.planGeometry),studio={...defaultStudio,...s.studio};
   const camera=createPhotoCamera();camera.position.set(...sceneLayout.photoView.position);
-  camera.userData.orientation=s.orientation||'landscape';applyLens(camera,Number(f['focal-length']));
+  camera.userData.aspectRatio=s.aspectRatio||'3:2';camera.userData.orientation=s.orientation||'landscape';applyLens(camera,Number(f['focal-length']));
   const travel=createCameraTravel(camera,sceneLayout.photoView.target);travel.setTilt(s.cameraTilt??travel.initialTilt);travel.target.fromArray(s.target);travel.setDistance(Number(f['camera-distance']));
   if(g){camera.position.fromArray(g.camera);camera.lookAt(travel.target);camera.updateMatrixWorld(true);}
   const centre=[Number(f['subject-x']),Number(f['subject-height'])/2,Number(f['subject-z'])];
@@ -30,7 +30,7 @@ function savedPlan(shot,date) {
   const geometries=new Set(),materials=new Set();scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)materials.add(o.material);});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
   // Old shots have no full-subject footprint. Mark its saved position, never invent dimensions.
   return {title:shot.name,date,notes:s.notes,studio,
-    camera:{position:camera.position.toArray(),target:travel.target.toArray(),focal:Number(f['focal-length']),orientation:s.orientation||'landscape',aperture:f.aperture,focus:Number(f['focus-distance']),tilt:travel.getTilt(),distance:camera.position.distanceTo(travel.target)},
+    camera:{position:camera.position.toArray(),target:travel.target.toArray(),focal:Number(f['focal-length']),orientation:s.orientation||'landscape',aspectRatio:s.aspectRatio||'3:2',aperture:f.aperture,focus:Number(f['focus-distance']),tilt:travel.getTilt(),distance:camera.position.distanceTo(travel.target)},
     subject:{name:names[f['subject-type']]||f['subject-type'],min:g?.min||centre,max:g?.max||centre,yaw:f['subject-yaw'],boundsUnavailable:!g},
     aim,lights:g?s.lights:Object.fromEntries(Object.entries(s.lights).map(([id,state])=>[id,{...state,follow:false}])),supports,reflectors:validateEquipment(s.reflectors,'reflector',s.reflector),flags:validateEquipment(s.flags,'flag',s.blackFlag)};
 }
