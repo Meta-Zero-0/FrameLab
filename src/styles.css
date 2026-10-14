@@ -110,6 +110,16 @@ button:disabled { opacity: .45; cursor: default; }
 /* Fill the camera's entire grid cell with a neutral viewing surround. */
 .lens-workspace::before { content: ''; grid-column: 2; grid-row: 1; background: #000; pointer-events: none; }
 .lens-workspace.photo-expanded::before { grid-column: 1 / -1; }
+.view-splitter { display: none; }
+@media (min-width: 851px) {
+  .lens-workspace:not(.photo-expanded) { grid-template-columns: minmax(0, var(--overview-track, 1fr)) minmax(0, var(--camera-track, 1fr)); }
+  .lens-workspace:not(.photo-expanded) .view-splitter { display: block; grid-column: 1; grid-row: 1; justify-self: end; align-self: stretch; width: 12px; min-height: 0; transform: translateX(50%); position: relative; z-index: 4; cursor: col-resize; touch-action: none; }
+  .view-splitter::before { content: ''; position: absolute; inset: 0 5px; background: #a8b6a8; }
+  .view-splitter::after { content: ''; position: absolute; width: 4px; height: 34px; top: calc(50% - 17px); left: 4px; border-radius: 3px; background: #f4f4ed; box-shadow: 0 0 0 1px #526b5f; }
+  .view-splitter:hover::before, .view-splitter:focus-visible::before, .resizing-views .view-splitter::before { inset-inline: 3px; background: #46795e; }
+  .view-splitter:focus-visible { outline: 2px solid #46795e; outline-offset: -2px; }
+  .resizing-views { cursor: col-resize; user-select: none; }
+}
 #overview-panel { grid-column: 1; grid-row: 1; height: auto; min-height: 0; aspect-ratio: 3/2; }
 #photo-frame { position: relative; grid-column: 2; grid-row: 1; border-radius: 0; }
 .viewport-label { top: 12px; left: 12px; z-index: 2; padding: 7px 9px; border-radius: 6px; background: #f4f4eddc; color: #20332b; font-weight: 600; }
