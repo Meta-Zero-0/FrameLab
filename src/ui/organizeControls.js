@@ -9,6 +9,11 @@ export function organizeControls() {
   }
   const camera = find('.camera-controls');
   find('#camera-orientation').parentElement.classList.add('select-row');
+  const formatRow = document.createElement('div');
+  formatRow.className = 'camera-format-row';
+  const orientationLabel = find('#camera-orientation').parentElement;
+  orientationLabel.before(formatRow);
+  formatRow.append(orientationLabel, find('#camera-aspect').parentElement);
   const presets = camera.querySelector('.presets');
   const framing = camera.querySelector('.framing-control');
   // Keep lens, distance and camera height together before secondary choices.

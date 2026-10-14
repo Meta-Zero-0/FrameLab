@@ -201,6 +201,9 @@ select:disabled { opacity: .55; cursor: not-allowed; }
 .control-deck select { font-size: 13px; height: 32px; padding: 4px 8px; margin: 0; min-width: 0; }
 .select-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
 #camera-orientation, #camera-aspect { width: 132px; }
+.camera-format-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 8px 12px; margin-bottom: 6px; }
+.camera-format-row .select-row { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
+.camera-format-row #camera-orientation, .camera-format-row #camera-aspect { width: 100%; }
 .control-deck > section { padding: 12px; }
 .control-deck h3 { margin-bottom: 8px; }
 .control-deck .numeric-control { margin: 6px 0 2px; }
