@@ -107,6 +107,9 @@ button:disabled { opacity: .45; cursor: default; }
 .header button { padding: 7px 12px; }
 .workspace { gap: 0; border-radius: 10px; }
 .photo-panel { display: contents; }
+/* Fill the camera's entire grid cell with a neutral viewing surround. */
+.lens-workspace::before { content: ''; grid-column: 2; grid-row: 1; background: #000; pointer-events: none; }
+.lens-workspace.photo-expanded::before { grid-column: 1 / -1; }
 #overview-panel { grid-column: 1; grid-row: 1; height: auto; min-height: 0; aspect-ratio: 3/2; }
 #photo-frame { position: relative; grid-column: 2; grid-row: 1; border-radius: 0; }
 .viewport-label { top: 12px; left: 12px; z-index: 2; padding: 7px 9px; border-radius: 6px; background: #f4f4eddc; color: #20332b; font-weight: 600; }
@@ -146,7 +149,7 @@ select { margin: 4px; padding: 6px; font: inherit; color: inherit; }
 input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid #35634d; outline-offset: 3px; }
 .photo-expanded #photo-frame { grid-column: 1 / -1; width: 100%; max-width: calc(112.5vh - 100px); }
 
-@media(max-width:850px) { .lens-workspace { grid-template-columns: 1fr; } #overview-panel { grid-column: 1; grid-row: 1; } #photo-frame { grid-column: 1; grid-row: 2; } .photo-expanded #photo-frame { grid-row: 1; } }
+@media(max-width:850px) { .lens-workspace { grid-template-columns: 1fr; } #overview-panel { grid-column: 1; grid-row: 1; } #photo-frame, .lens-workspace::before { grid-column: 1; grid-row: 2; } .photo-expanded #photo-frame, .lens-workspace.photo-expanded::before { grid-row: 1; } }
 @media(max-width:720px) { .app { padding: 8px; } .control-deck { grid-template-columns: 1fr; } .control-deck > section + section { border-left: 0; border-top: 1px solid #c7cec1; } #reference-list { grid-template-columns: 1fr; gap: 4px; } .viewport-footer > span { font-size: 10px; } .capture-actions { gap: 5px; } }
 .control-deck .guide-section { grid-column: 1; border-top: 1px solid #c7cec1; border-left: 0; }
 .control-deck .scene-references { grid-column: 2 / -1; border-left: 1px solid #c7cec1; }
@@ -249,16 +252,20 @@ select:disabled { opacity: .55; cursor: not-allowed; }
 #light-status:empty, .guide-note:empty { display: none; }
 
 @media (min-width: 1000px) and (min-height: 600px) {
-  .lens-workspace { height: calc(100dvh - 76px); grid-template-rows: minmax(220px, 40dvh) auto auto minmax(0,1fr); }
+  .lens-workspace { --view-height: 40dvh; height: calc(100dvh - 76px); grid-template-rows: minmax(220px, var(--view-height)) auto auto minmax(0,1fr); }
   #overview-panel { height: 100%; aspect-ratio: auto; }
-  #photo-frame { height: auto; width: min(100%, 60dvh); max-width: 100%; aspect-ratio: 3/2; justify-self: center; align-self: center; }
-  #photo-frame[data-orientation="portrait"] { width: min(100%, 26.6667dvh); aspect-ratio: 2/3; }
+  #photo-frame { height: auto; width: min(100%, calc(var(--view-height) * 1.5)); max-width: 100%; aspect-ratio: 3/2; justify-self: center; align-self: center; }
+  #photo-frame[data-orientation="portrait"] { width: min(100%, calc(var(--view-height) * 2 / 3)); aspect-ratio: 2/3; }
   .control-switch { grid-row: 2; }
   .equipment-summary { grid-row: 3; }
   .control-deck { grid-row: 4; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
   .lens-workspace.photo-expanded { grid-template-rows: minmax(220px, 65dvh) auto auto minmax(0,1fr); }
   .photo-expanded #photo-frame { height: auto; width: min(100%, 97.5dvh); min-width: 0; max-width: 100%; }
   .photo-expanded #photo-frame[data-orientation="portrait"] { width: min(100%, 43.3333dvh); max-width: 100%; }
+}
+@media (min-width: 1400px) and (min-height: 800px) {
+  /* Grow both views together, retaining room for controls and capping pixel cost. */
+  .lens-workspace { --view-height: min(52dvh, 640px, calc(100dvh - 440px)); }
 }
 @media (max-width: 1100px) {
   .lighting-controls .subject-fields { grid-template-columns: repeat(3,minmax(0,1fr)); }
