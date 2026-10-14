@@ -174,6 +174,7 @@ input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px 
 .lighting-controls .subject-fields input[type="number"]:invalid { border-color: #a94b10; }
 .light-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .light-legend button { border-left: 5px solid var(--light-colour); }
+.light-legend button[data-enabled="true"] { background: var(--light-colour); border-color: var(--light-colour); color: #fff; }
 .light-legend button[aria-pressed="true"] { outline: 2px solid var(--light-colour); outline-offset: 1px; font-weight: 600; }
 
 input[type="checkbox"], #maintain-framing, .reference-row input[type="checkbox"] { accent-color: #6CF8A6; }

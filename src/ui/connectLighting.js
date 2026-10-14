@@ -133,6 +133,7 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
       attr.setXYZ(0,...light.position.toArray()); attr.setXYZ(1,...light.target.position.toArray()); attr.needsUpdate = true; line.geometry.computeBoundingSphere();
       button.textContent = identities[name][2] + ' · ' + (saved[name]?.name||identities[name][0]) + (light.visible ? ' · On' : ' · Off');
       button.setAttribute('aria-pressed',String(name === selected));
+      button.dataset.enabled = String(light.visible);
     }
     const destination=['key','fill','hair'].find(name=>name!==selected&&!saved[name]?.enabled);
     byId('light-duplicate').disabled=!destination||selected==='background';
@@ -264,12 +265,12 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
   }
   switcher.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.mode)));
   function reset() {
-    saved = Object.fromEntries(Object.entries(initial).map(([name,values])=>[name,{values:{...values},enabled:name==='key',follow:true,mode:'studio',source:'soft',customColour:false,colour:'#ffffff'}]));
+    saved = Object.fromEntries(Object.entries(initial).map(([name,values])=>[name,{values:{...values},enabled:true,follow:true,mode:'studio',source:'soft',customColour:false,colour:'#ffffff'}]));
     saved.background = backgroundState();
     accepted['light-fill'] = 0; byId('light-marker').checked = true; load('key');
     byId('lighting-preset-note').textContent='Lighting reset to defaults. Choose a preset and Apply to use it.';
   }
-  byId('reset-lighting').dataset.help = 'Reset all four lights: key on, fill, hair and background off, Studio mode, white colours, default emitter sizes and positions. There is no ambient fill. Camera and subject stay unchanged.';
+  byId('reset-lighting').dataset.help = 'Reset all four lights: key, fill and hair on, background off, Studio mode, white colours, default emitter sizes and positions. There is no ambient fill. Camera and subject stay unchanged.';
   for (const [id,preset] of Object.entries(lightingPresets)) { const option=document.createElement('option'); option.value=id; option.textContent=preset.label; byId('lighting-preset').append(option); }
   function describePreset() { byId('lighting-preset-note').textContent=lightingPresets[byId('lighting-preset').value].note; }
   byId('lighting-preset').addEventListener('change',describePreset); describePreset();
