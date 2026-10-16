@@ -292,7 +292,7 @@ select:disabled { opacity: .55; cursor: not-allowed; }
   .control-deck > section { padding: 6px 8px; }
   .control-deck h3, .guide-section .guide-controls legend { font-size: 12px; margin-bottom: 4px; }
   .control-deck button, .control-switch button, .shot-menu > summary { font-size: 11px; min-height: 24px; padding: 2px 6px; }
-  .control-deck select { font-size: 11px; height: 24px; padding: 2px 6px; }
+  .control-deck select, .control-deck #aperture { font-size: 11px; height: 24px; padding: 2px 6px; }
   .control-deck input[type="number"], .control-deck input[type="text"] { font-size: 11px; min-height: 24px; padding: 2px 6px; }
   .control-deck .numeric-control { margin: 2px 0 0; gap: 8px; }
   .control-deck input[type="range"] { min-height: 16px; }
