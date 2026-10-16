@@ -41,7 +41,7 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
     wrapper.append(input, slider); panel.querySelector(id.startsWith('light-aim') ? '#aim-fields' : '#light-fields').append(wrapper);
   }
   const byId = id => document.getElementById(id), value = id => Number(byId(id).value);
-  byId('light-legend').insertAdjacentHTML('afterend','<div id="light-naming" class="equipment-collection"><label>Light name<input id="light-name" maxlength="60" /></label><button type="button" id="light-duplicate">Duplicate light</button></div>');
+  byId('light-legend').insertAdjacentHTML('afterend','<div id="light-naming" class="equipment-collection"><label>Light name<input id="light-name" maxlength="60" /></label></div>');
   byId('light-fields').insertAdjacentHTML('beforeend', '<label id="modifier-rotation-control">Softbox rotation (°)<input id="modifier-rotation" aria-label="Softbox rotation" type="number" min="-180" max="180" step="1" value="0" /><input id="modifier-rotation-slider" aria-label="Softbox rotation slider" type="range" min="-180" max="180" step="1" value="0" /></label>');
   let modifierRotation = 0;
   byId('modifier-rotation').dataset.help = 'Rotate the softbox around its aim direction. 0° is the starting orientation; 90° turns a vertical strip sideways. Light position, aim and total output stay unchanged.';
@@ -135,10 +135,6 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
       button.setAttribute('aria-pressed',String(name === selected));
       button.dataset.enabled = String(light.visible);
     }
-    const destination=['key','fill','hair'].find(name=>name!==selected&&!saved[name]?.enabled);
-    byId('light-duplicate').disabled=!destination||selected==='background';
-    byId('light-duplicate').textContent=destination&&selected!=='background'?'Duplicate to '+identities[destination][0]:'Duplicate light';
-    byId('light-duplicate').title='Copies into an unused subject-light slot. The existing four-light limit stays unchanged.';
   }  const initial = {
     key: { ...defaults },
     fill: { ...defaults, 'light-x': 4, 'light-y': 3, 'light-z': 4, 'light-intensity': 1 },
@@ -148,13 +144,6 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
   let saved = {};
   function save() { saved[selected] = { name:byId('light-name').value.trim().slice(0,60)||identities[selected][0], values: {...accepted}, enabled: byId('key-enabled').checked, follow: byId('light-follow').checked, mode: byId('light-model').value, source: byId('light-source').value, modifier: byId('light-modifier').value, modifierRotation, support: byId('light-support').value, customColour, colour: byId('light-colour').value }; }
   byId('light-name').addEventListener('change',()=>{save();byId('light-name').value=saved[selected].name;updateMarkers();});
-  byId('light-duplicate').addEventListener('click',()=>{
-    save();const destination=['key','fill','hair'].find(name=>name!==selected&&!saved[name]?.enabled);
-    if(!destination||selected==='background')return;
-    const copy=structuredClone(saved[selected]);copy.name=(copy.name+' copy').slice(0,60);copy.enabled=true;
-    copy.values['light-x'] += copy.values['light-x']+.5<=8 ? .5 : -.5;
-    saved[destination]=copy;load(destination);
-  });
   function applyOtherLights() {
     for (const [name, state] of Object.entries(saved)) {
       if (name === selected) continue;
