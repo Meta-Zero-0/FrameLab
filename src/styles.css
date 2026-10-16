@@ -286,24 +286,24 @@ select:disabled { opacity: .55; cursor: not-allowed; }
   .light-source-row { flex-wrap: wrap; }
 }
 
-/* Compact desktop controls; retain the roomier touch layout. */
-@media (min-width: 851px) and (pointer: fine) {
-  .control-deck, .control-deck > section, .control-deck .numeric-control, .control-deck .select-row { font-size: 12px; }
-  .control-deck > section { padding: 9px 10px; }
-  .control-deck h3, .guide-section .guide-controls legend { font-size: 13px; margin-bottom: 6px; }
-  .control-deck button, .control-switch button, .shot-menu > summary { font-size: 12px; min-height: 28px; padding: 4px 8px; }
-  .control-deck select { font-size: 12px; height: 28px; padding: 3px 6px; }
-  .control-deck input[type="number"], .control-deck input[type="text"] { font-size: 12px; min-height: 28px; padding: 3px 6px; }
-  .control-deck .numeric-control { margin: 4px 0 1px; gap: 8px; }
-  .control-deck input[type="range"] { min-height: 20px; }
-  .control-deck :is(#focal-length, #camera-distance, #camera-height, #camera-tilt, #focus-distance, #subject-rotation) { margin: 3px 0; }
-  .control-deck .subject-fields { gap: 6px 10px; }
+/* Compact desktop controls; narrow screens retain the roomier layout. */
+@media (min-width: 851px) {
+  .control-deck, .control-deck > section, .control-deck .numeric-control, .control-deck .select-row { font-size: 11px; }
+  .control-deck > section { padding: 6px 8px; }
+  .control-deck h3, .guide-section .guide-controls legend { font-size: 12px; margin-bottom: 4px; }
+  .control-deck button, .control-switch button, .shot-menu > summary { font-size: 11px; min-height: 24px; padding: 2px 6px; }
+  .control-deck select { font-size: 11px; height: 24px; padding: 2px 6px; }
+  .control-deck input[type="number"], .control-deck input[type="text"] { font-size: 11px; min-height: 24px; padding: 2px 6px; }
+  .control-deck .numeric-control { margin: 2px 0 0; gap: 8px; }
+  .control-deck input[type="range"] { min-height: 16px; }
+  .control-deck :is(#focal-length, #camera-distance, #camera-height, #camera-tilt, #focus-distance, #subject-rotation) { margin: 1px 0; }
+  .control-deck .subject-fields { gap: 4px 8px; }
   .control-deck .subject-fields label { gap: 3px; }
-  .control-deck .rotation-control, .control-deck .subject-controls details { margin: 5px 0; }
+  .control-deck .rotation-control, .control-deck .subject-controls details { margin: 3px 0; }
   .control-deck summary { padding: 4px 0; margin-bottom: 0; }
   .control-deck .secondary-controls { margin-top: 5px; }
-  .control-deck .secondary-controls > summary { padding: 5px 0; }
-  .control-deck .control-help, .control-deck .guide-note { margin: 5px 0; line-height: 1.4; }
+  .control-deck .secondary-controls > summary { padding: 3px 0; }
+  .control-deck .control-help, .control-deck .guide-note { margin: 3px 0; line-height: 1.4; }
   .control-deck .presets { gap: 4px; margin-top: 6px; }
   .control-deck .equipment-controls { margin: 6px 0; padding: 6px 8px; }
   .control-deck .equipment-collection { gap: 6px 10px; margin: 6px 0 8px; }
@@ -313,5 +313,5 @@ select:disabled { opacity: .55; cursor: not-allowed; }
   .control-deck .camera-format-row { gap: 6px 10px; margin-bottom: 4px; }
   .control-switch { padding: 5px 10px; align-items: center; }
   .control-switch button { min-width: 84px; }
-  .shot-menu { font-size: 12px; }
+  .shot-menu { font-size: 11px; }
 }
