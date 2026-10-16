@@ -33,7 +33,7 @@
           <div id="human-options" hidden>
             <label for="subject-pose">Pose</label><select id="subject-pose"><option value="standing">Standing</option><option value="arms-out">Arms out</option><option value="seated">Seated</option></select>
             <label for="subject-region">Frame</label><select id="subject-region"><option value="full">Full body</option><option value="shoulders">Head and shoulders</option><option value="head">Headshot</option></select>
-            <details class="control-help"><summary>Mannequin details</summary><p class="guide-note">A simple mannequin for composition. Seated pose has no chair; facial detail and joint editing come later.</p></details>
+            <details class="control-help"><summary>Mannequin details</summary><p class="guide-note">A simple mannequin for composition. The seated pose has no chair; facial detail and individual joints are not editable.</p></details>
           </div>
           <details><summary>Size and placement</summary><div class="subject-fields">
             <label>Height (m)<input id="subject-height" type="number" min="0.05" max="3" step="0.001" value="1"></label>
@@ -62,7 +62,7 @@
         <input id="camera-tilt" aria-label="Camera tilt" type="range" min="-85" max="85" step="0.1" value="-8" />
         <div class="range-labels"><span>Down</span><span>0° / Level</span><span>Up</span></div>
         
-        <details class="control-help"><summary>Camera guide explained</summary><p class="guide-note">Blue camera and lines: overview guides only. The lines end at the target plane; they do not show depth of field.</p></details>
+        <details class="control-help"><summary>Camera guide explained</summary><p class="guide-note">Blue lines show the camera field of view in the overview. They end at the target plane; they do not show depth of field.</p></details>
         <dl><div><dt>Sensor</dt><dd id="sensor-dimensions">36 × 24 mm</dd></div><div><dt>Vertical field of view</dt><dd id="vertical-fov"></dd></div><div><dt>Camera movement</dt><dd>Along viewing direction</dd></div></dl>
 </section>
         <section class="focus-controls" aria-label="Focus and aperture">

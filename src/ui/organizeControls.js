@@ -27,7 +27,15 @@ export function organizeControls() {
     const section = find(selector);
     const title = selector === '.guide-section' ? 'Overview guides' : 'Scene references';
     const nodes = [...section.children];
-    group(section,title,nodes);
+    const details = group(section,title,nodes);
+    const summary = details.querySelector('summary');
+    summary.id = selector === '.guide-section' ? 'overview-guides-heading' : 'scene-references-heading';
+    // The disclosure is the visible title; preserve the fieldset's accessible name.
+    const fieldset = details.querySelector('fieldset');
+    if (fieldset) {
+      fieldset.setAttribute('aria-labelledby', summary.id);
+      fieldset.querySelector('legend')?.remove();
+    }
     section.querySelector('h3')?.remove();
   }
   const lights = find('.lighting-controls');

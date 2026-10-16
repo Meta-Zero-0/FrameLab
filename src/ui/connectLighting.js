@@ -51,7 +51,7 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
   byId('modifier-rotation').addEventListener('blur', () => {
     byId('modifier-rotation').value = modifierRotation; update();
   });
-  byId('key-enabled').dataset.help = 'Enable or disable only the selected lamp. Other lamps remain active. Does not change camera exposure or the stored key settings.';
+  byId('key-enabled').dataset.help = 'Enable or disable only the selected lamp. Other lamps remain active. Preserves the selected light’s settings while it is off.';
   byId('light-follow').dataset.help = 'Keep the light aimed at the centre of the selected subject region as you move it. Turn off to keep an independently positioned aim point.';
   byId('light-marker').dataset.help = 'Show all four light positions and aim lines, even when lamps are off. K, F, H and B colours match the panel indicators and identify roles, not emitted light colours. Off lamps have wireframe markers.';
   scene.add(key.target);

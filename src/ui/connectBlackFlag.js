@@ -28,7 +28,7 @@ export function connectBlackFlag(scene, subject) {
     input.addEventListener('input',()=>change(input));slider.addEventListener('input',()=>change(slider));
     input.addEventListener('blur',()=>sync());label.append(input,slider);fields.append(label);
   }
-  const exact=document.createElement('details');exact.innerHTML='<summary>Exact flag placement</summary>';exact.append(inputs.x.parentElement,inputs.z.parentElement);fields.after(exact);
+  const exact=document.createElement('details');exact.className='secondary-controls';exact.innerHTML='<summary>Exact flag placement</summary><div class="subject-fields"></div>';exact.querySelector('div').append(inputs.x.parentElement,inputs.z.parentElement);fields.after(exact);
   function sync(){const state=flag.snapshot();for(const key of Object.keys(inputs))inputs[key].value=sliders[key].value=state[key];section.querySelector('[data-enabled]').checked=state.enabled;section.querySelector('[data-enabled]').disabled=!collection.selected;section.querySelector('[data-options]').hidden=!collection.selected||!state.enabled;orbit.sync();}
   function restore(value){if(!collection.selected)return;collection.selected.state=flag.apply(value);collection.refresh();sync();}
   section.querySelector('[data-enabled]').addEventListener('change',e=>restore({...flag.snapshot(),enabled:e.target.checked}));
