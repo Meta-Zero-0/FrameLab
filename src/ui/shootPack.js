@@ -30,7 +30,7 @@ function savedPlan(shot,date) {
   const geometries=new Set(),materials=new Set();scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)materials.add(o.material);});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
   // Old shots have no full-subject footprint. Mark its saved position, never invent dimensions.
   return {title:shot.name,date,notes:s.notes,studio,
-    camera:{position:camera.position.toArray(),target:travel.target.toArray(),focal:Number(f['focal-length']),orientation:s.orientation||'landscape',aspectRatio:s.aspectRatio||'3:2',aperture:f.aperture,focus:Number(f['focus-distance']),tilt:travel.getTilt(),distance:camera.position.distanceTo(travel.target)},
+    camera:{position:camera.position.toArray(),target:travel.target.toArray(),focal:Number(f['focal-length']),orientation:s.orientation||'landscape',aspectRatio:s.aspectRatio||'3:2',iso:s.exposure?.iso??100,shutter:s.exposure?.shutter??1/125,aperture:f.aperture,focus:Number(f['focus-distance']),tilt:travel.getTilt(),distance:camera.position.distanceTo(travel.target)},
     subject:{name:names[f['subject-type']]||f['subject-type'],min:g?.min||centre,max:g?.max||centre,yaw:f['subject-yaw'],boundsUnavailable:!g},
     aim,lights:g?s.lights:Object.fromEntries(Object.entries(s.lights).map(([id,state])=>[id,{...state,follow:false}])),supports,reflectors:validateEquipment(s.reflectors,'reflector',s.reflector),flags:validateEquipment(s.flags,'flag',s.blackFlag)};
 }

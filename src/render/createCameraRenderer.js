@@ -5,6 +5,7 @@ import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { visualDofSettings } from '../camera/visualDof.js';
+import { exposureMultiplier } from '../camera/exposure.js';
 export function createCameraRenderer(canvas, scene, camera) {
   const renderer = new WebGLRenderer({ canvas, antialias: true });
   // Twice CSS resolution also improves edges on standard-density displays.
@@ -29,6 +30,7 @@ export function createCameraRenderer(canvas, scene, camera) {
   composer.addPass(new OutputPass());
   composer.addPass(new SMAAPass());
   function update(state) {
+    renderer.toneMappingExposure = exposureMultiplier(state.iso, state.shutter, state.fNumber);
     bokeh.enabled = state.visualDof;
     for (const [name, value] of Object.entries(visualDofSettings(state.focalLength, state.fNumber, state.focusDistance))) {
       bokeh.uniforms[name].value = value;

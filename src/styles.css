@@ -315,3 +315,7 @@ select:disabled { opacity: .55; cursor: not-allowed; }
   .control-switch button { min-width: 84px; }
   .shot-menu { font-size: 11px; }
 }
+
+.exposure-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:6px 0; }
+.exposure-row label { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.exposure-row select, .exposure-row #aperture { width:100%; margin:0; }

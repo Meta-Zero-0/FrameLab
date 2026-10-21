@@ -1,3 +1,4 @@
+import {validateExposure} from '../camera/exposure.js';
 import {defaultStudio,validStudio} from '../scene/studioBounds.js';
 import {validateReflector} from '../scene/reflectorState.js';
 import {lightModifiers} from '../scene/lightModifiers.js';
@@ -10,6 +11,7 @@ const byId=id=>document.getElementById(id);
 const vector=v=>Array.isArray(v)&&v.length===3&&v.every(n=>Number.isFinite(n)&&Math.abs(n)<1000);
 export function validateSetup(data) {
  if(!data || data.format!=='FrameLab' || data.version!==1) throw new Error('Choose a FrameLab setup file (version 1).');
+ const exposure=validateExposure(data.exposure);
  const reflector=validateReflector(data.reflector);
  const blackFlag=validateFlag(data.blackFlag);
  const notes=validateShotNotes(data.notes);
@@ -39,7 +41,7 @@ export function validateSetup(data) {
  if(!Array.isArray(data.props)||data.props.length!==3||!data.props.every(v=>typeof v==='boolean')||typeof data.markers!=='boolean') throw new Error('Invalid visibility settings.');
  if(!Array.isArray(data.lock?.points)||data.lock.points.length!==8||!data.lock.points.every(vector)||!Number.isFinite(data.lock.occupancy)||data.lock.occupancy<=0) throw new Error('Invalid framing reference.');
  if(data.fields['subject-type']==='import' && (!data.model || typeof data.model.name!=='string'||typeof data.model.base64!=='string'||data.model.base64.length>70000000||!/^[A-Za-z0-9+/]*={0,2}$/.test(data.model.base64))) throw new Error('The imported GLB is missing or invalid.');
- return {...data,planGeometry,notes,flags,reflectors,blackFlag,reflector,orientation:data.orientation||'landscape',aspectRatio:data.aspectRatio||'3:2',studio:{...defaultStudio,...data.studio},fields:Object.fromEntries(fieldIds.map(id=>[id,data.fields[id]])),lights:Object.fromEntries(['key','fill','hair','background'].map(name=>[name,data.lights[name]]))};
+ return {...data,exposure,planGeometry,notes,flags,reflectors,blackFlag,reflector,orientation:data.orientation||'landscape',aspectRatio:data.aspectRatio||'3:2',studio:{...defaultStudio,...data.studio},fields:Object.fromEntries(fieldIds.map(id=>[id,data.fields[id]])),lights:Object.fromEntries(['key','fill','hair','background'].map(name=>[name,data.lights[name]]))};
 }
 export function validateProject(data) {
  const current=validateSetup(data);

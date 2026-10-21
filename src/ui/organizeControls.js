@@ -20,7 +20,7 @@ export function organizeControls() {
   camera.append(framing);
   group(camera, 'Lens presets and camera details', [presets, camera.querySelector('dl'), camera.querySelector('.control-help')]);
   const focus = find('.focus-controls');
-  group(focus, 'Depth of field and focus help', [...focus.querySelectorAll('dl, .control-help')]);
+  group(focus, 'Focus and exposure details', [...focus.querySelectorAll('dl, .control-help')]);
   const subject = find('.subject-controls');
   group(subject, 'Subject help', [find('#subject-status')]);
   for(const selector of ['.guide-section', '.scene-references']) {

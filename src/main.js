@@ -189,7 +189,7 @@ try {
       if (input.type === 'checkbox') input.checked = input.defaultChecked;
       else input.value = input.defaultValue;
     });
-    for (const id of ['subject-type', 'subject-pose', 'subject-region', 'aperture']) {
+    for (const id of ['subject-type', 'subject-pose', 'subject-region', 'aperture', 'camera-iso', 'camera-shutter']) {
       const select = document.getElementById(id);
       select.selectedIndex = Math.max(0, Array.from(select.options).findIndex(option => option.defaultSelected));
     }
@@ -210,8 +210,10 @@ try {
 
   function capturePlanGeometry(){const bounds=new Box3().setFromObject(subject);return {min:bounds.min.toArray(),max:bounds.max.toArray(),aim:subjects.bounds().getCenter(new Vector3()).toArray(),camera:photo.camera.position.toArray()};}
   const setupFiles=connectSetupFiles({subjects,
-    snapshot:()=>({planGeometry:capturePlanGeometry(),flags:blackFlag.snapshotAll(),reflectors:meshReflector.snapshotAll(),blackFlag:blackFlag.snapshot(),cameraTilt:travel.getTilt(),reflector:meshReflector.snapshot(),orientation:orientation.value,aspectRatio:aspectRatio.value,studio:studio.snapshot(),target:travel.target.toArray(),lights:lighting.snapshot(),markers:document.querySelector('#light-marker').checked,props:props.map(p=>p.visible),lock:(lock.snapshot().occupancy ? lock.snapshot() : (lock.capture(Number(focalLength.value),Number(distance.value)),lock.snapshot())),overview:{position:overview.camera.position.toArray(),target:overview.controls.target.toArray()}}),
+    snapshot:()=>({exposure:{iso:Number(document.querySelector('#camera-iso').value),shutter:Number(document.querySelector('#camera-shutter').value)},planGeometry:capturePlanGeometry(),flags:blackFlag.snapshotAll(),reflectors:meshReflector.snapshotAll(),blackFlag:blackFlag.snapshot(),cameraTilt:travel.getTilt(),reflector:meshReflector.snapshot(),orientation:orientation.value,aspectRatio:aspectRatio.value,studio:studio.snapshot(),target:travel.target.toArray(),lights:lighting.snapshot(),markers:document.querySelector('#light-marker').checked,props:props.map(p=>p.visible),lock:(lock.snapshot().occupancy ? lock.snapshot() : (lock.capture(Number(focalLength.value),Number(distance.value)),lock.snapshot())),overview:{position:overview.camera.position.toArray(),target:overview.controls.target.toArray()}}),
     restore(data) {
+      document.querySelector('#camera-iso').value=data.exposure.iso;
+      document.querySelector('#camera-shutter').value=data.exposure.shutter;
       studio.restore(data.studio);
       maintain.checked=false;
       setOrientation(data.orientation, data.aspectRatio || '3:2');
@@ -239,7 +241,7 @@ try {
     const field=id=>document.getElementById(id).value;
     return {
       title:setupFiles.activeShotName(),notes:setupFiles.notes(),date:new Date().toLocaleString('en-GB'),studio:studio.snapshot(),
-      camera:{position:photo.camera.position.toArray(),target:travel.target.toArray(),focal:Number(field('focal-length')),orientation:orientation.value,aspectRatio:aspectRatio.value,aperture:field('aperture'),focus:Number(field('focus-distance')),tilt:travel.getTilt(),distance:photo.camera.position.distanceTo(travel.target)},
+      camera:{position:photo.camera.position.toArray(),target:travel.target.toArray(),focal:Number(field('focal-length')),orientation:orientation.value,aspectRatio:aspectRatio.value,iso:Number(field('camera-iso')),shutter:Number(field('camera-shutter')),aperture:field('aperture'),focus:Number(field('focus-distance')),tilt:travel.getTilt(),distance:photo.camera.position.distanceTo(travel.target)},
       subject:{name:document.querySelector('#subject-type').selectedOptions[0].textContent,min:bounds.min.toArray(),max:bounds.max.toArray(),yaw:field('subject-yaw')},
       aim:subjects.bounds().getCenter(new Vector3()).toArray(),lights:lighting.snapshot(),supports:lighting.equipmentReports(),
       reflectors:meshReflector.snapshotAll(),flags:blackFlag.snapshotAll()
