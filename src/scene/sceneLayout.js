@@ -24,5 +24,5 @@ export const sceneLayout = {
     keyPosition: [-3, 2, 4],
     keyIntensity: 3,
   },
-  view: { position: [11, 9, 14], target: [0, 0.5, 3] },
+  view: { position: [0, 5.9, 17.2], target: [0, 0, 0] },
 };

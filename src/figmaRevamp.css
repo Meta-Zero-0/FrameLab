@@ -19,7 +19,7 @@
 .app { max-width: none; padding: 0; }
 .app .header { position: relative; z-index: 5; min-height: 40px; margin: 0; padding: 4px 26px; background: #fff; box-shadow: 0 3px 5px #0003; }
 .header .brand-logo { width: auto; height: auto; }
-.lens-workspace { border: 0; border-radius: 0; }
+.lens-workspace { border: 0; border-radius: 0; overflow: clip; }
 .lens-workspace::before { background: linear-gradient(136deg, #161414 16%, #272229 84%); }
 .lens-workspace .view-splitter::before { width: var(--revamp-divider-width); background: var(--revamp-line); }
 .lens-workspace .view-splitter:focus-visible::before { background: var(--revamp-highlight); }

@@ -270,7 +270,7 @@ select:disabled { opacity: .55; cursor: not-allowed; }
   #photo-frame { height: auto; width: min(100%, calc(var(--view-height) * var(--frame-aspect))); max-width: 100%; aspect-ratio: 3/2; justify-self: center; align-self: center; }
   .control-switch { grid-row: 2; }
   .equipment-summary { grid-row: 3; }
-  .control-deck { grid-row: 4; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
+  .control-deck { grid-row: 4; min-height: 0; overflow-y: auto; scrollbar-gutter: stable; }
   .lens-workspace.photo-expanded { grid-template-rows: minmax(220px, 65dvh) auto auto minmax(0,1fr); }
   .photo-expanded #photo-frame { height: auto; width: min(100%, calc(65dvh * var(--frame-aspect))); min-width: 0; max-width: 100%; }
 }
