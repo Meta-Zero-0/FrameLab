@@ -117,7 +117,10 @@ export function organizeControls() {
     }
   }
   studio.append(find('.reflector-controls'), find('.black-flag-controls'));
-  side.before(find('.lighting-controls'), studio);
+  const modeControls = document.createElement('div');
+  modeControls.className = 'mode-controls';
+  side.before(modeControls);
+  modeControls.append(camera, focusStack, exposure, find('.lighting-controls'), studio);
   const logo = find('.brand-logo');
   logo.src = `${import.meta.env.BASE_URL}figma-revamp/wordmark.svg`;
   const lensDetails = [...lensInfo.children];

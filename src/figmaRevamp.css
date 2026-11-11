@@ -3,7 +3,7 @@
   --revamp-mint: #bdf1da;
   --revamp-card: #fff;
   --revamp-dark-surface: linear-gradient(0.57deg, #2b292c 0.57%, #1c1624 99.43%);
-  --revamp-dark-heading: linear-gradient(to right, #292c2b, #1e1b20);
+  --revamp-dark-card: #2b252f;
   --revamp-green: #416958;
   --revamp-highlight: #81cfae;
   --revamp-line: #34825b;
@@ -31,15 +31,24 @@
 
 .control-deck {
   --deck-gutter: 10px;
-  isolation: isolate;
-  grid-template-columns: minmax(0, 29fr) minmax(0, 23fr) minmax(0, 29fr) minmax(0, 19fr);
+  --mode-padding: 16px;
+  grid-template-columns: minmax(0, 81fr) minmax(0, 19fr);
   align-items: stretch;
   gap: var(--deck-gutter);
   padding: var(--deck-gutter);
   border: 0;
+  background: var(--revamp-dark-surface);
+}
+.mode-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 29fr) minmax(0, 23fr) minmax(0, 29fr);
+  gap: var(--deck-gutter);
+  padding: var(--mode-padding);
+  min-width: 0;
+  border-top-right-radius: 10px;
   background: linear-gradient(var(--revamp-mint), #d7f3e6);
 }
-.control-deck > section, .focus-stack > section, .workspace-guides > section, .studio-controls > :is(.studio-card, .reflector-controls, .black-flag-controls) {
+.control-deck > section, .mode-controls > section, .focus-stack > section, .workspace-guides > section, .studio-controls > :is(.studio-card, .reflector-controls, .black-flag-controls) {
   min-width: 0;
   margin: 0;
   padding: 10px;
@@ -80,17 +89,8 @@
   background: transparent;
   box-shadow: none;
 }
-.subject-controls, .workspace-guides { position: relative; }
-.subject-controls::before, .workspace-guides::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  background: var(--revamp-dark-surface);
-}
-.subject-controls::before { inset: calc(-1 * var(--deck-gutter)); }
 .control-deck .subject-controls > h3:first-child {
-  background: var(--revamp-dark-heading);
+  background: var(--revamp-dark-card);
   border-bottom: 1px solid #ffffff24;
   color: inherit;
   text-shadow: none;
@@ -135,10 +135,9 @@
 .focus-stack, .workspace-guides { display: grid; gap: 10px; min-width: 0; }
 .focus-stack { grid-column: 2; grid-template-rows: auto auto 1fr; }
 .control-deck .exposure-controls { grid-column: 3; }
-.workspace-guides { grid-column: 4; grid-template-rows: auto 1fr; }
-.workspace-guides::before { inset: 0 calc(-1 * var(--deck-gutter)) calc(-1 * var(--deck-gutter)) calc(-0.5 * var(--deck-gutter)); }
-.control-deck[data-mode]:not([data-mode="camera"]) .camera-only { display: none; }
-.control-deck :is(.lighting-controls, .studio-controls) { grid-column: 1 / 4; grid-row: 2; }
+.workspace-guides { grid-column: 2; grid-template-rows: auto 1fr; padding-block: var(--mode-padding); }
+.mode-controls > section[hidden], .control-deck[data-mode]:not([data-mode="camera"]) .camera-only { display: none; }
+.control-deck :is(.lighting-controls, .studio-controls) { grid-column: 1 / -1; grid-row: auto; }
 .control-deck .studio-controls:not([hidden]) {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -156,7 +155,7 @@
   border-radius: 6px;
   background: var(--revamp-input);
 }
-.control-deck .workspace-guides > section { grid-column: auto; border: 0; color: #f1f4eb; background: #272229; }
+.control-deck .workspace-guides > section { grid-column: auto; border: 0; color: #f1f4eb; background: var(--revamp-dark-card); }
 .workspace-guides .secondary-controls { margin: 0; border: 0; }
 .workspace-guides .secondary-controls > summary { padding: 6px 0; }
 :is(.subject-controls, .workspace-guides) .guide-note, .workspace-guides .reference-row p { color: #d7dfd9; }
@@ -239,17 +238,17 @@
   .lens-workspace { --view-height: clamp(220px, 41dvh, 560px); }
 }
 @media (max-width: 1100px) {
-  .control-deck { grid-template-columns: minmax(0, 34fr) minmax(0, 31fr) minmax(0, 35fr); }
-  .workspace-guides { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
-  .workspace-guides::before { inset: calc(-0.5 * var(--deck-gutter)) calc(-1 * var(--deck-gutter)) calc(-1 * var(--deck-gutter)); }
+  .control-deck { grid-template-columns: minmax(0, 1fr); }
+  .mode-controls { grid-template-columns: minmax(0, 34fr) minmax(0, 31fr) minmax(0, 35fr); }
+  .workspace-guides { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; padding-block: 0; }
 }
 @media (max-width: 850px) {
   .app .header { padding-inline: 10px; }
-  .control-deck { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .control-deck .exposure-controls, .control-deck :is(.lighting-controls, .studio-controls) { grid-column: 1 / -1; }
+  .mode-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .control-deck .exposure-controls { grid-column: 1 / -1; }
 }
 @media (max-width: 560px) {
-  .control-deck, .workspace-guides { grid-template-columns: minmax(0, 1fr); }
+  .mode-controls, .workspace-guides { grid-template-columns: minmax(0, 1fr); }
   .control-deck .studio-controls:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
   .focus-stack { grid-column: 1; }
   .subject-row .subject-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
