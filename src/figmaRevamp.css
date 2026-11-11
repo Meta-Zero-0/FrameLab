@@ -154,7 +154,19 @@
 .triangle-aperture { margin: 0 0 6px; }
 .triangle-surface { position: relative; width: min(86%, 148px); aspect-ratio: 1.154700538; margin: 0 auto; cursor: crosshair; touch-action: none; }
 .triangle-surface::before, .triangle-surface::after { content: ''; position: absolute; inset: 0; }
-.triangle-surface::before { clip-path: polygon(50% 0, 100% 100%, 0 100%); background: var(--revamp-green); }
+.triangle-surface::before {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  clip-path: shape(
+    from calc(50% - 2px) 3.464px,
+    curve to calc(50% + 2px) 3.464px with 50% 0,
+    line to calc(100% - 2px) calc(100% - 3.464px),
+    curve to calc(100% - 4px) 100% with 100% 100%,
+    line to 4px 100%,
+    curve to 2px calc(100% - 3.464px) with 0 100%,
+    close
+  );
+  background: var(--revamp-green);
+}
 /* Inset the fill by 2px perpendicular to each edge of the equilateral outline. */
 .triangle-surface::after { clip-path: polygon(50% 4px, calc(100% - 3.464px) calc(100% - 2px), 3.464px calc(100% - 2px)); background: linear-gradient(to right, #edf8f3, #d7eee4); }
 .triangle-marker { position: absolute; z-index: 1; width: 13px; height: 13px; border: 2px solid white; border-radius: 50%; background: #234f3a; box-shadow: 0 1px 3px #0006; transform: translate(-50%, -50%); pointer-events: none; }
