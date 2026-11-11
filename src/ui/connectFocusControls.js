@@ -3,6 +3,7 @@ import { Vector3 } from 'three';
 import { createFocusGuides } from '../scene/createFocusGuides.js';
 import { calculateDof } from '../camera/dofMath.js';
 import { isoValues, shutterValues, shutterLabel } from '../camera/exposure.js';
+import { connectExposureTriangle } from './connectExposureTriangle.js';
 
 export function connectFocusControls(scene, photo, target) {
   const focus = document.querySelector('#focus-distance');
@@ -22,11 +23,11 @@ export function connectFocusControls(scene, photo, target) {
   }
   const iso=selector('camera-iso','ISO',isoValues,100);
   const shutter=selector('camera-shutter','Shutter speed',shutterValues,1/125,shutterLabel);
+  const exposurePad = connectExposureTriangle([aperture, iso, shutter], update);
+  exposureRow.before(exposurePad.triangle);
   const help=document.createElement('details'); help.className='control-help';
   help.innerHTML='<summary>Relative exposure</summary><p class="guide-note">ISO, shutter speed and aperture change camera brightness for continuous lighting. Reference: ISO 100, 1/125 s, f/2.8. Light output is not calibrated to real fixtures. Flash timing, motion blur and sensor noise are not simulated.</p>';
   exposureRow.after(help);
-  document.querySelector('.focus-controls h3').textContent='Focus and exposure';
-  document.querySelector('.focus-controls').setAttribute('aria-label','Focus and exposure');
   const blur = document.querySelector('#visual-blur');
   const showPlane = document.querySelector('#show-focus-plane');
   const guides = createFocusGuides(scene, photo.camera);
@@ -34,6 +35,7 @@ export function connectFocusControls(scene, photo, target) {
   const forward = new Vector3();
   const format = value => Number.isFinite(value) ? `${value.toFixed(2)} m` : 'Infinity';
   function update() {
+    exposurePad.sync();
     if (follow.checked) setTargetDistance();
     focus.disabled = document.querySelector('#focus-number').disabled = follow.checked;
     focusNumber.sync();

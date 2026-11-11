@@ -31,6 +31,7 @@ export function connectTooltips() {
     'expand-photo': 'Expand the full frame view or return to split view. Does not change the lens, framing or saved captures. Escape returns to split view.',
     'clear-comparison': 'Clear both saved comparison photographs and settings. Leaves the live scene unchanged.',
   };
+  for (const id of ['aperture', 'camera-iso', 'camera-shutter']) tips[`${id}-slider`] = tips[id];
   // Full-frame examples are starting points, not rules about which lens is allowed.
   const lensUses = {
     18: '18 mm · Ultra-wide: interiors, expansive landscapes and dramatic foregrounds. Close camera positions exaggerate near/far proportions; keep faces away from frame edges.',

@@ -1,0 +1,142 @@
+:root {
+  --revamp-page: #f1f4eb;
+  --revamp-mint: #bdf1da;
+  --revamp-card: #fff;
+  --revamp-green: #416958;
+  --revamp-highlight: #81cfae;
+  --revamp-line: #34825b;
+  --revamp-input: #eef8f6;
+  --revamp-border: #b5d2c5;
+  --revamp-shadow: 2px 2px 4px #172d2426;
+  background: var(--revamp-page);
+  font-family: 'League Spartan', Inter, 'Segoe UI', sans-serif;
+}
+
+.app { max-width: none; padding: 0; }
+.app .header { position: relative; z-index: 5; min-height: 40px; margin: 0; padding: 4px 26px; background: #fff; box-shadow: 0 3px 5px #0003; }
+.header .brand-logo { width: auto; height: auto; }
+.lens-workspace { border: 0; border-radius: 0; }
+.lens-workspace::before { background: linear-gradient(136deg, #161414 16%, #272229 84%); }
+.lens-workspace .view-splitter::before { background: var(--revamp-line); }
+.lens-workspace .view-splitter:focus-visible::before { background: var(--revamp-highlight); }
+.control-switch { background: var(--revamp-page); border-top: 4px solid var(--revamp-line); }
+.control-switch button[aria-pressed="true"] { background: var(--revamp-green); }
+
+.control-deck {
+  grid-template-columns: minmax(0, 21fr) minmax(0, 21fr) minmax(0, 27fr) minmax(0, 27fr);
+  align-items: start;
+  gap: 10px;
+  padding: 10px;
+  border: 0;
+  background: linear-gradient(var(--revamp-mint), #d7f3e6);
+}
+.control-deck > section, .focus-stack > section, .workspace-guides > section {
+  min-width: 0;
+  margin: 0;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--revamp-card);
+  box-shadow: var(--revamp-shadow);
+  font-size: 12px;
+}
+.control-deck > section + section { border: 0; }
+.control-deck :is(.subject-controls, .camera-controls, .focus-controls, .exposure-controls, .lens-presets-card, .lighting-controls, .studio-controls) > h3:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  min-height: 40px;
+  margin: -10px -10px 10px;
+  padding: 6px 10px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(105deg, var(--revamp-green), var(--revamp-highlight));
+  color: white;
+  font-size: 13px;
+  text-shadow: 0 1px 2px #152d24;
+}
+.control-deck h3 > label { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: normal; color: #102e21; text-shadow: none; }
+.control-deck .subject-controls { grid-column: 1 / -1; }
+.subject-row, .subject-model, .subject-row .rotation-control { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.subject-row > .subject-fields { grid-template-columns: repeat(3, auto); }
+.subject-row .subject-fields label { flex-direction: row; align-items: center; }
+.subject-row .subject-fields input { width: 58px; }
+.subject-row .rotation-control { flex: 1 1 230px; }
+.subject-row #subject-rotation { flex: 1 1 70px; width: auto; min-width: 70px; }
+.subject-row #subject-yaw { width: 55px; }
+.control-deck .camera-controls { grid-column: 1; }
+.control-deck .camera-format-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.adjustment-row { display: grid; grid-template-columns: minmax(0, 1fr) 54px 56px; gap: 5px; align-items: center; min-height: 33px; }
+.control-deck .adjustment-row .numeric-control { display: contents; }
+.adjustment-row .numeric-control input { grid-column: 3; grid-row: 1; width: 100%; }
+.adjustment-row > input[type="range"] { grid-column: 2; grid-row: 1; width: 100%; }
+.focus-stack, .workspace-guides { display: grid; gap: 10px; min-width: 0; }
+.focus-stack { grid-column: 2; }
+.control-deck .exposure-controls { grid-column: 3; }
+.workspace-guides { grid-column: 4; }
+.control-deck[data-mode]:not([data-mode="camera"]) .camera-only { display: none; }
+.control-deck :is(.lighting-controls, .studio-controls) { grid-column: 1 / 4; grid-row: auto; }
+.control-deck .workspace-guides > section { grid-column: auto; color: #f1f4eb; background: #272229; }
+.workspace-guides .secondary-controls { margin: 0; border: 0; }
+.workspace-guides .secondary-controls > summary { padding: 6px 0; }
+.workspace-guides .guide-note, .workspace-guides .reference-row p { color: #d7dfd9; }
+.workspace-guides .control-help { color: inherit; }
+.workspace-guides #reference-list { grid-template-columns: 1fr; gap: 0; }
+.workspace-guides .reference-row { padding: 4px 0; }
+.control-deck :is(input[type="number"], input[type="text"]) { background: var(--revamp-input); border-color: var(--revamp-border); }
+.control-deck select {
+  appearance: none;
+  padding-right: 29px;
+  color: #123326;
+  border-color: var(--revamp-border);
+  background: url('/figma-revamp/select-arrow.svg') right 9px center no-repeat,
+    linear-gradient(to left, var(--revamp-green) 26px, #d7f3e6 26px);
+}
+.control-deck .exposure-row #aperture { padding-right: 29px; }
+.control-deck button:not(.light-legend button) { border-color: var(--revamp-green); }
+.control-deck :is(#fit-subject, #focus-target) { background: var(--revamp-green); color: #fff; }
+.control-deck :is(#fit-subject, #focus-target):hover { background: #2b5040; }
+.lens-presets-card .presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.lens-presets-card .presets button { padding-inline: 2px; }
+.lens-presets-card dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 10px; }
+.lens-presets-card dl > div { display: block; position: relative; border: 0; padding-block: 0; }
+.lens-presets-card dd { text-align: left; margin: 4px 0 0; }
+.lens-detail-divider { position: absolute; left: -4px; top: 0; transform: rotate(90deg); transform-origin: top left; }
+.camera-controls .framing-control { background: transparent; margin: 3px 0; padding: 0; }
+.control-deck :is(#subject-rotation, #focal-length, #focus-distance) { appearance: none; background: transparent; }
+.control-deck :is(#subject-rotation, #focal-length, #focus-distance)::-webkit-slider-runnable-track { height: 2px; background: #c5ddc9; }
+.control-deck :is(#subject-rotation, #focal-length, #focus-distance)::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; margin-top: -5px; background: url('/figma-revamp/lens-thumb.svg') center no-repeat; }
+.control-deck #subject-rotation::-webkit-slider-thumb { background-image: url('/figma-revamp/rotation-thumb.svg'); }
+
+.exposure-triangle { max-width: 200px; margin: 0 auto 8px; text-align: center; }
+.triangle-aperture { margin: 0 0 6px; }
+.triangle-surface { position: relative; width: 86%; aspect-ratio: 1.65; margin: 0 auto; cursor: crosshair; touch-action: none; }
+.triangle-surface::before { content: ''; position: absolute; inset: 0; clip-path: polygon(50% 0, 100% 100%, 0 100%); background: conic-gradient(from 0deg at 50% 66.67%, #91ceb4, #d4efe3, #78b598, #91ceb4); }
+.triangle-marker { position: absolute; width: 13px; height: 13px; border: 2px solid white; border-radius: 50%; background: #234f3a; box-shadow: 0 1px 3px #0006; transform: translate(-50%, -50%); pointer-events: none; }
+.triangle-base { display: flex; justify-content: space-between; margin: 7px 0; }
+.exposure-row { margin-top: 8px; }
+.exposure-setting { min-width: 0; }
+.exposure-row input[type="range"] { width: 100%; margin: 0; accent-color: var(--revamp-green); }
+.comparison { margin: 14px 10px; background: #fff; }
+
+@media (min-width: 1000px) and (min-height: 600px) {
+  .lens-workspace { height: calc(100dvh - 40px); --view-height: clamp(220px, 41dvh, 560px); }
+}
+@media (max-width: 1100px) {
+  .control-deck { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .workspace-guides { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 850px) {
+  .app .header { padding-inline: 10px; }
+  .control-deck { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .control-deck .exposure-controls, .control-deck :is(.lighting-controls, .studio-controls) { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .control-deck, .workspace-guides { grid-template-columns: minmax(0, 1fr); }
+  .focus-stack { grid-column: 1; }
+  .subject-row .subject-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+  .subject-row .subject-fields label { flex-direction: column; align-items: start; }
+  .control-switch { flex-wrap: wrap; }
+  .control-switch button { min-width: 0; }
+}

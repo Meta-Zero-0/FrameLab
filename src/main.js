@@ -7,6 +7,7 @@ import { connectNumberInput } from './ui/connectNumberInput.js';
 import { createSubjectSystem } from './scene/createSubjectSystem.js';
 import { connectSubjectControls } from './ui/connectSubjectControls.js';
 import './styles.css';
+import './figmaRevamp.css';
 import { connectSceneReferences } from './ui/connectSceneReferences.js';
 import { connectWorkspaceControls } from './ui/connectWorkspaceControls.js';
 import { connectFocusControls } from './ui/connectFocusControls.js';

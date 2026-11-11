@@ -16,18 +16,57 @@ export function organizeControls() {
   formatRow.append(orientationLabel, find('#camera-aspect').parentElement);
   const presets = camera.querySelector('.presets');
   const framing = camera.querySelector('.framing-control');
-  // Keep lens, distance and camera height together before secondary choices.
   camera.append(framing);
-  group(camera, 'Lens presets and camera details', [presets, camera.querySelector('dl'), camera.querySelector('.control-help')]);
+  const lensInfo = camera.querySelector('dl');
+  const lensHelp = camera.querySelector('.control-help');
+  const framingToggle = framing.querySelector('label');
+  camera.querySelector('h3').append(framingToggle);
+  for (const id of ['focal-length', 'camera-distance', 'camera-height', 'camera-tilt', 'focus-distance']) {
+    const slider = find(`#${id}`);
+    const label = slider.previousElementSibling;
+    const row = document.createElement('div'); row.className = 'adjustment-row';
+    label.before(row); row.append(label, slider);
+  }
+  function card(title, className) {
+    const section = document.createElement('section');
+    section.className = className;
+    const heading = document.createElement('h3'); heading.textContent = title;
+    section.append(heading);
+    return section;
+  }
   const focus = find('.focus-controls');
-  group(focus, 'Focus and exposure details', [...focus.querySelectorAll('dl, .control-help')]);
+  focus.setAttribute('aria-label', 'Focus');
+  focus.querySelector('h3').textContent = 'Focus';
+  const followToggle = find('#follow-focus').closest('label');
+  const followRow = followToggle.parentElement;
+  focus.querySelector('h3').append(followToggle); followRow.remove();
+  const exposure = card('Exposure', 'exposure-controls camera-only');
+  const blurToggle = find('#visual-blur').closest('label');
+  const blurRow = blurToggle.parentElement;
+  exposure.querySelector('h3').append(blurToggle); blurRow.remove();
+  exposure.append(find('.exposure-triangle'), find('.exposure-row'), ...[...focus.querySelectorAll('.control-help')].filter(item => /Relative exposure|Blur and sharpness/.test(item.querySelector('summary').textContent)));
+  group(focus, 'Depth of field', [...focus.querySelectorAll('dl, .control-help')]);
+  const lensPresets = card('Lens presets', 'lens-presets-card');
+  lensPresets.append(presets, lensInfo, lensHelp);
+  const focusStack = document.createElement('div'); focusStack.className = 'focus-stack camera-only';
+  focus.before(focusStack); focusStack.append(focus, lensPresets); focusStack.after(exposure);
   const subject = find('.subject-controls');
+  subject.querySelector('h3').append(find('#fit-subject'));
+  const subjectRow = document.createElement('div'); subjectRow.className = 'subject-row';
+  const model = document.createElement('div'); model.className = 'subject-model';
+  model.append(find('label[for="subject-type"]'), find('#subject-type'), find('#subject-file').closest('details'));
+  const placement = find('#subject-height').closest('.subject-fields');
+  const placementDisclosure = placement.closest('details');
+  subjectRow.append(model, placement, find('.rotation-control'));
+  placementDisclosure.remove();
+  subject.querySelector('h3').after(subjectRow);
   group(subject, 'Subject help', [find('#subject-status')]);
   for(const selector of ['.guide-section', '.scene-references']) {
     const section = find(selector);
     const title = selector === '.guide-section' ? 'Overview guides' : 'Scene references';
     const nodes = [...section.children];
     const details = group(section,title,nodes);
+    details.open = true;
     const summary = details.querySelector('summary');
     summary.id = selector === '.guide-section' ? 'overview-guides-heading' : 'scene-references-heading';
     // The disclosure is the visible title; preserve the fieldset's accessible name.
@@ -37,6 +76,18 @@ export function organizeControls() {
       fieldset.querySelector('legend')?.remove();
     }
     section.querySelector('h3')?.remove();
+  }
+  const side = document.createElement('aside'); side.className = 'workspace-guides';
+  const guides = find('.guide-section'); guides.before(side);
+  side.append(guides, find('.scene-references'));
+  const logo = find('.brand-logo');
+  logo.src = `${import.meta.env.BASE_URL}figma-revamp/wordmark.svg`;
+  const lensDetails = [...lensInfo.children];
+  for (const [index, detail] of lensDetails.slice(1).entries()) {
+    const divider = document.createElement('img');
+    divider.className = 'lens-detail-divider'; divider.alt = '';
+    divider.src = `${import.meta.env.BASE_URL}figma-revamp/lens-divider-${index === 0 ? 'a' : 'b'}.svg`;
+    detail.prepend(divider);
   }
   const lights = find('.lighting-controls');
   const toolbar = document.createElement('div'); toolbar.className = 'light-toolbar';
