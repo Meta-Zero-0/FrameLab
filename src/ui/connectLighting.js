@@ -244,7 +244,6 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
     update();
   });
   function setMode(mode) {
-    deck.scrollTop = 0;
     deck.dataset.mode = mode;
     deck.classList.toggle('lighting-mode', mode === 'lighting');
     for (const selector of ['.camera-controls','.focus-controls']) deck.querySelector(selector).hidden = mode !== 'camera';

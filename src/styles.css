@@ -265,13 +265,13 @@ select:disabled { opacity: .55; cursor: not-allowed; }
 #light-status:empty, .guide-note:empty { display: none; }
 
 @media (min-width: 1000px) and (min-height: 600px) {
-  .lens-workspace { --view-height: 40dvh; height: calc(100dvh - 76px); grid-template-rows: minmax(220px, var(--view-height)) auto auto minmax(0,1fr); }
+  .lens-workspace { --view-height: 40dvh; grid-template-rows: minmax(220px, var(--view-height)) auto auto auto; }
   #overview-panel { height: 100%; aspect-ratio: auto; }
   #photo-frame { height: auto; width: min(100%, calc(var(--view-height) * var(--frame-aspect))); max-width: 100%; aspect-ratio: 3/2; justify-self: center; align-self: center; }
   .control-switch { grid-row: 2; }
   .equipment-summary { grid-row: 3; }
-  .control-deck { grid-row: 4; min-height: 0; overflow-y: auto; scrollbar-gutter: stable; }
-  .lens-workspace.photo-expanded { grid-template-rows: minmax(220px, 65dvh) auto auto minmax(0,1fr); }
+  .control-deck { grid-row: 4; }
+  .lens-workspace.photo-expanded { grid-template-rows: minmax(220px, 65dvh) auto auto auto; }
   .photo-expanded #photo-frame { height: auto; width: min(100%, calc(65dvh * var(--frame-aspect))); min-width: 0; max-width: 100%; }
 }
 @media (min-width: 1400px) and (min-height: 800px) {

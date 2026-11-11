@@ -208,7 +208,7 @@
 .comparison { margin: 14px 10px; background: #fff; }
 
 @media (min-width: 1000px) and (min-height: 600px) {
-  .lens-workspace { height: calc(100dvh - 40px); --view-height: clamp(220px, 41dvh, 560px); }
+  .lens-workspace { --view-height: clamp(220px, 41dvh, 560px); }
 }
 @media (max-width: 1100px) {
   .control-deck { grid-template-columns: minmax(0, 34fr) minmax(0, 31fr) minmax(0, 35fr); }
