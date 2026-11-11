@@ -4,7 +4,6 @@
   --revamp-card: #fff;
   --revamp-dark-surface: linear-gradient(0.57deg, #2b292c 0.57%, #1c1624 99.43%);
   --revamp-dark-heading: linear-gradient(to right, #292c2b, #1e1b20);
-  --revamp-dark-card: #272323;
   --revamp-green: #416958;
   --revamp-highlight: #81cfae;
   --revamp-line: #34825b;
@@ -31,10 +30,12 @@
 .app .header button, .control-switch button, .control-switch .shot-menu > summary { font-size: var(--control-text-size); font-weight: 400; }
 
 .control-deck {
+  --deck-gutter: 10px;
+  isolation: isolate;
   grid-template-columns: minmax(0, 29fr) minmax(0, 23fr) minmax(0, 29fr) minmax(0, 19fr);
   align-items: stretch;
-  gap: 10px;
-  padding: 10px;
+  gap: var(--deck-gutter);
+  padding: var(--deck-gutter);
   border: 0;
   background: linear-gradient(var(--revamp-mint), #d7f3e6);
 }
@@ -73,7 +74,21 @@
   text-shadow: 0 1px 2px #152d24;
 }
 .control-deck h3 > label { display: flex; align-items: center; gap: 4px; color: #102e21; text-shadow: none; }
-.control-deck .subject-controls { grid-column: 1 / -1; }
+.control-deck .subject-controls {
+  grid-column: 1 / -1;
+  color: #f1f4eb;
+  background: transparent;
+  box-shadow: none;
+}
+.subject-controls, .workspace-guides { position: relative; }
+.subject-controls::before, .workspace-guides::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--revamp-dark-surface);
+}
+.subject-controls::before { inset: calc(-1 * var(--deck-gutter)); }
 .control-deck .subject-controls > h3:first-child {
   background: var(--revamp-dark-heading);
   border-bottom: 1px solid #ffffff24;
@@ -120,7 +135,8 @@
 .focus-stack, .workspace-guides { display: grid; gap: 10px; min-width: 0; }
 .focus-stack { grid-column: 2; grid-template-rows: auto auto 1fr; }
 .control-deck .exposure-controls { grid-column: 3; }
-.workspace-guides { grid-column: 4; grid-template-rows: auto 1fr; padding: 8px; border-radius: 8px; background: var(--revamp-dark-surface); }
+.workspace-guides { grid-column: 4; grid-template-rows: auto 1fr; }
+.workspace-guides::before { inset: 0 calc(-1 * var(--deck-gutter)) calc(-1 * var(--deck-gutter)) calc(-0.5 * var(--deck-gutter)); }
 .control-deck[data-mode]:not([data-mode="camera"]) .camera-only { display: none; }
 .control-deck :is(.lighting-controls, .studio-controls) { grid-column: 1 / 4; grid-row: 2; }
 .control-deck .studio-controls:not([hidden]) {
@@ -140,17 +156,9 @@
   border-radius: 6px;
   background: var(--revamp-input);
 }
-.control-deck .workspace-guides > section { grid-column: auto; }
-.control-deck .subject-controls, .control-deck .workspace-guides > section { color: #f1f4eb; background: var(--revamp-dark-card); }
-.control-deck .subject-controls { background: var(--revamp-dark-surface); }
+.control-deck .workspace-guides > section { grid-column: auto; border: 0; color: #f1f4eb; background: #272229; }
 .workspace-guides .secondary-controls { margin: 0; border: 0; }
-.workspace-guides > section > .secondary-controls > summary {
-  margin: -10px -10px 8px;
-  padding: 10px;
-  border-radius: 8px 8px 0 0;
-  background: var(--revamp-dark-heading);
-}
-.workspace-guides > section > .secondary-controls:not([open]) > summary { margin-bottom: -10px; border-radius: 8px; }
+.workspace-guides .secondary-controls > summary { padding: 6px 0; }
 :is(.subject-controls, .workspace-guides) .guide-note, .workspace-guides .reference-row p { color: #d7dfd9; }
 :is(.subject-controls, .workspace-guides) .control-help { color: inherit; }
 .workspace-guides #reference-list { grid-template-columns: 1fr; gap: 0; }
@@ -233,6 +241,7 @@
 @media (max-width: 1100px) {
   .control-deck { grid-template-columns: minmax(0, 34fr) minmax(0, 31fr) minmax(0, 35fr); }
   .workspace-guides { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
+  .workspace-guides::before { inset: calc(-0.5 * var(--deck-gutter)) calc(-1 * var(--deck-gutter)) calc(-1 * var(--deck-gutter)); }
 }
 @media (max-width: 850px) {
   .app .header { padding-inline: 10px; }
