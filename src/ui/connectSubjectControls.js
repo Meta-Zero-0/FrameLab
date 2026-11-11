@@ -5,6 +5,8 @@ export function connectSubjectControls(subjects, onChange) {
   rotation.addEventListener('input', () => { yaw.value = rotation.value; yaw.dispatchEvent(new Event('input')); });
   yaw.addEventListener('input', () => { if (yaw.checkValidity()) rotation.value = yaw.value; });
   const status = document.querySelector('#subject-status'), fileInput = document.querySelector('#subject-file');
+  const importButton = document.querySelector('#import-glb');
+  importButton.addEventListener('click', () => fileInput.click());
   function sync() {
     document.querySelector('#human-options').hidden = type.value !== 'human';
     height.value = subjects.height().toFixed(3); x.value = z.value = yaw.value = rotation.value = 0;
@@ -21,7 +23,7 @@ export function connectSubjectControls(subjects, onChange) {
   document.querySelector('#fit-subject').addEventListener('click', onChange);
   fileInput.addEventListener('change', async () => {
     const file = fileInput.files[0]; if (!file) return;
-    fileInput.disabled = type.disabled = pose.disabled = true; status.textContent = 'Loading model…';
+    importButton.disabled = fileInput.disabled = type.disabled = pose.disabled = true; status.textContent = 'Loading model…';
     try {
       const sourceHeight = await subjects.importFile(file);
       document.querySelector('#import-option').disabled = false;
@@ -30,7 +32,7 @@ export function connectSubjectControls(subjects, onChange) {
       if (sourceHeight < .05 || sourceHeight > 3) subjects.place(1, 0, 0, 0);
       sync(); status.textContent = `${file.name} loaded. Check its height below. Static pose only; reload clears the import.`;
     } catch (error) { status.textContent = `Could not import: ${error.message}`; }
-    finally { fileInput.disabled = type.disabled = pose.disabled = false; fileInput.value = ''; }
+    finally { importButton.disabled = fileInput.disabled = type.disabled = pose.disabled = false; fileInput.value = ''; }
   });
 }
 

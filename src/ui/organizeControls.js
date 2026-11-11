@@ -13,7 +13,29 @@ export function organizeControls() {
   formatRow.className = 'camera-format-row';
   const orientationLabel = find('#camera-orientation').parentElement;
   orientationLabel.before(formatRow);
-  formatRow.append(orientationLabel, find('#camera-aspect').parentElement);
+  const aspect = find('#camera-aspect');
+  const aspectLabel = aspect.parentElement;
+  const aspectRow = document.createElement('div'); aspectRow.className = 'aspect-row';
+  const aspectTitle = document.createElement('span'); aspectTitle.textContent = 'Aspect Ratio';
+  const aspectButtons = document.createElement('div'); aspectButtons.className = 'aspect-segments';
+  aspectButtons.setAttribute('role', 'group');
+  aspectButtons.setAttribute('aria-label', 'Aspect ratio');
+  for (const option of aspect.options) {
+    const button = document.createElement('button'); button.type = 'button';
+    button.textContent = option.textContent;
+    button.dataset.aspectRatio = option.value;
+    button.dataset.help = aspect.dataset.help;
+    button.setAttribute('aria-pressed', String(option.selected));
+    button.addEventListener('click', () => {
+      aspect.value = option.value;
+      aspect.dispatchEvent(new Event('change'));
+    });
+    aspectButtons.append(button);
+  }
+  aspect.hidden = true;
+  aspectRow.append(aspectTitle, aspectButtons, aspect);
+  aspectLabel.remove();
+  formatRow.append(orientationLabel, aspectRow);
   const presets = camera.querySelector('.presets');
   const framing = camera.querySelector('.framing-control');
   camera.append(framing);
@@ -47,14 +69,17 @@ export function organizeControls() {
   exposure.append(find('.exposure-triangle'), find('.exposure-row'), ...[...focus.querySelectorAll('.control-help')].filter(item => /Relative exposure|Blur and sharpness/.test(item.querySelector('summary').textContent)));
   group(focus, 'Depth of field', [...focus.querySelectorAll('dl, .control-help')]);
   const lensPresets = card('Lens presets', 'lens-presets-card');
-  lensPresets.append(presets, lensInfo, lensHelp);
+  lensPresets.append(presets);
+  const lensDetailsCard = document.createElement('section'); lensDetailsCard.className = 'lens-details-card';
+  lensDetailsCard.setAttribute('aria-label', 'Lens details');
+  lensDetailsCard.append(lensInfo, lensHelp);
   const focusStack = document.createElement('div'); focusStack.className = 'focus-stack camera-only';
-  focus.before(focusStack); focusStack.append(focus, lensPresets); focusStack.after(exposure);
+  focus.before(focusStack); focusStack.append(focus, lensPresets, lensDetailsCard); focusStack.after(exposure);
   const subject = find('.subject-controls');
   subject.querySelector('h3').append(find('#fit-subject'));
   const subjectRow = document.createElement('div'); subjectRow.className = 'subject-row';
   const model = document.createElement('div'); model.className = 'subject-model';
-  model.append(find('label[for="subject-type"]'), find('#subject-type'), find('#subject-file').closest('details'));
+  model.append(find('label[for="subject-type"]'), find('#subject-type'), find('#import-glb'), find('#subject-file'));
   const placement = find('#subject-height').closest('.subject-fields');
   const placementDisclosure = placement.closest('details');
   subjectRow.append(model, placement, find('.rotation-control'));

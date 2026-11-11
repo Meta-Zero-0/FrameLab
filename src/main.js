@@ -138,6 +138,9 @@ try {
   const aspectRatio = document.querySelector('#camera-aspect');
   function setOrientation(value, ratio = aspectRatio.value) {
     aspectRatio.value = ratio;
+    document.querySelectorAll('[data-aspect-ratio]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.aspectRatio === ratio));
+    });
     photo.camera.userData.aspectRatio = ratio;
     orientation.value = value;
     photo.camera.userData.orientation = value;
