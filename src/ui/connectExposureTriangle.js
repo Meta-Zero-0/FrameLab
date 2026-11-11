@@ -20,7 +20,7 @@ export function connectExposureTriangle(selects, update) {
   });
   const triangle = document.createElement('div');
   triangle.className = 'exposure-triangle';
-  triangle.innerHTML = '<p class="triangle-aperture">Wider aperture</p><div class="triangle-surface" aria-hidden="true"><span class="triangle-marker"></span></div><div class="triangle-base"><span>Higher ISO</span><span>Slower shutter</span></div><p class="guide-note">Drag to mix all three settings. Use the sliders for independent adjustments.</p>';
+  triangle.innerHTML = '<p class="triangle-aperture">Wider aperture</p><div class="triangle-surface" aria-hidden="true"><span class="triangle-marker"></span></div><div class="triangle-base"><span>Higher ISO</span><span>Slower shutter</span></div><p class="guide-note">Drag to adjust all three settings.</p>';
   const surface = triangle.querySelector('.triangle-surface');
   const marker = triangle.querySelector('.triangle-marker');
   // Walk toward a vertex to favour that control. The centre starts at the reference exposure.
