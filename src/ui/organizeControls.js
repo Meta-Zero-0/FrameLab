@@ -105,6 +105,19 @@ export function organizeControls() {
   const side = document.createElement('aside'); side.className = 'workspace-guides';
   const guides = find('.guide-section'); guides.before(side);
   side.append(guides, find('.scene-references'));
+  const studio = find('.studio-controls');
+  const studioSections = [...studio.children].filter(node => node.tagName === 'H3');
+  for (const heading of studioSections) {
+    const section = document.createElement('section');
+    section.className = 'studio-card';
+    heading.before(section);
+    section.append(heading);
+    while (section.nextElementSibling?.matches('.subject-fields, .guide-note')) {
+      section.append(section.nextElementSibling);
+    }
+  }
+  studio.append(find('.reflector-controls'), find('.black-flag-controls'));
+  side.before(find('.lighting-controls'), studio);
   const logo = find('.brand-logo');
   logo.src = `${import.meta.env.BASE_URL}figma-revamp/wordmark.svg`;
   const lensDetails = [...lensInfo.children];

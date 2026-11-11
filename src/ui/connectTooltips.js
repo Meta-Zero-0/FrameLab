@@ -62,7 +62,7 @@ export function connectTooltips() {
     tooltip.style.left = `${Math.max(8, Math.min(innerWidth - box.width - 8, rect.left))}px`;
     tooltip.style.top = `${Math.max(8, rect.bottom + box.height + 12 < innerHeight ? rect.bottom + 8 : rect.top - box.height - 8)}px`;
   }
-  document.querySelectorAll('input, select, button, summary').forEach(element => {
+  document.querySelectorAll('input, select, button, summary, [data-help]').forEach(element => {
     let text = element.dataset.help || tips[element.id];
     if (element.dataset.focal) text = `${lensUses[element.dataset.focal]} Full-frame examples. Maintain framing moves the camera to keep subject size similar.`;
     if (element.matches('#reference-list input')) text = 'Show or hide this prop in both views, including its shadow. Lens, focus and the subject remain unchanged.';
