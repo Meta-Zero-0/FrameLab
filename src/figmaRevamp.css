@@ -2,11 +2,11 @@
   --revamp-page: #f1f4eb;
   --revamp-mint: #bdf1da;
   --revamp-card: #fff;
-  --revamp-dark-surface: linear-gradient(0.57deg, #2b292c 0.57%, #1c1624 99.43%);
+  --revamp-dark-edge: #1c1624;
+  --revamp-dark-surface: linear-gradient(0.57deg, #2b292c 0.57%, var(--revamp-dark-edge) 99.43%);
   --revamp-dark-card: #2b252f;
   --revamp-green: #416958;
   --revamp-highlight: #81cfae;
-  --revamp-line: #34825b;
   --revamp-divider-width: 4px;
   --revamp-input: #eef8f6;
   --revamp-border: #b5d2c5;
@@ -23,9 +23,9 @@
 .header .brand-logo { width: auto; height: auto; }
 .lens-workspace { border: 0; border-radius: 0; overflow: clip; }
 .lens-workspace::before { background: linear-gradient(136deg, #161414 16%, #272229 84%); }
-.lens-workspace .view-splitter::before { width: var(--revamp-divider-width); background: var(--revamp-line); }
+.lens-workspace .view-splitter::before { width: var(--revamp-divider-width); background: var(--revamp-dark-edge); }
 .lens-workspace .view-splitter:focus-visible::before { background: var(--revamp-highlight); }
-.control-switch { background: var(--revamp-page); border-top: var(--revamp-divider-width) solid var(--revamp-line); }
+.control-switch { background: var(--revamp-page); border-top: var(--revamp-divider-width) solid var(--revamp-dark-edge); }
 .control-switch button[aria-pressed="true"] { background: var(--revamp-green); }
 .app .header button, .control-switch button, .control-switch .shot-menu > summary { font-size: var(--control-text-size); font-weight: 400; }
 
@@ -44,6 +44,7 @@
   grid-template-columns: minmax(0, 29fr) minmax(0, 23fr) minmax(0, 29fr);
   gap: var(--deck-gutter);
   padding: var(--mode-padding);
+  margin-left: calc(-1 * var(--deck-gutter));
   min-width: 0;
   border-top-right-radius: 10px;
   background: linear-gradient(var(--revamp-mint), #d7f3e6);
@@ -232,7 +233,12 @@
 .exposure-row .exposure-setting label { display: contents; }
 .exposure-setting select { grid-column: 3; grid-row: 1; }
 .exposure-row input[type="range"] { grid-column: 2; grid-row: 1; width: 100%; margin: 0; }
-.comparison { margin: 14px 10px; background: #fff; }
+.comparison-region { padding-top: 16px; }
+.comparison { margin: 0 10px 14px; background: #fff; }
+
+@media (min-width: 1101px) {
+  .mode-controls, .workspace-guides { margin-bottom: calc(-1 * var(--deck-gutter)); }
+}
 
 @media (min-width: 1000px) and (min-height: 600px) {
   .lens-workspace { --view-height: clamp(220px, 41dvh, 560px); }
