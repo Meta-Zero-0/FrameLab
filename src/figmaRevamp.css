@@ -171,8 +171,10 @@
 .app input[type="range"]::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; margin-top: -5px; background: url('/figma-revamp/lens-thumb.svg') center no-repeat; }
 .app input[type="range"]::-moz-range-track { height: 2px; border-radius: 20px; background: #c5ddc9; }
 .app input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 0; background: url('/figma-revamp/lens-thumb.svg') center no-repeat; }
-.control-deck #subject-rotation::-webkit-slider-thumb { background-image: url('/figma-revamp/rotation-thumb.svg'); }
-.control-deck #subject-rotation::-moz-range-thumb { background-image: url('/figma-revamp/rotation-thumb.svg'); }
+.control-deck #subject-rotation::-webkit-slider-runnable-track { background: #fff; }
+.control-deck #subject-rotation::-moz-range-track { background: #fff; }
+.control-deck #subject-rotation::-webkit-slider-thumb { border-radius: 50%; background: #fff; }
+.control-deck #subject-rotation::-moz-range-thumb { border-radius: 50%; background: #fff; }
 .app input[type="range"]:disabled { opacity: .5; }
 
 .exposure-triangle { max-width: 200px; margin: 0 auto 8px; text-align: center; }
