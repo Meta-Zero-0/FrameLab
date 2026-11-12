@@ -67,7 +67,7 @@ code { font-size: 11px; overflow-wrap: anywhere; }
 .reference-tag { width: max-content; font-size: 11px; color: #101d17; box-shadow: 0 1px 3px #0002; }
 .reference-tag span, .reference-row p { white-space: pre-line; }
 .subject-controls { border-bottom: 1px solid #c7cec1; padding: 12px 0 20px; margin-bottom: 20px; font-size: 13px; }
-select, .subject-fields input { padding: 8px; border: 1px solid #a8b6a8; border-radius: 5px; background: white; max-width: 100%; }
+select, .subject-fields input:not([type="range"]) { padding: 8px; border: 1px solid #a8b6a8; border-radius: 5px; background: white; max-width: 100%; }
 select { margin: 6px; }
 .subject-controls details { margin: 14px 0; }
 .subject-controls summary { cursor: pointer; margin-bottom: 10px; }
@@ -174,7 +174,7 @@ input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px 
 .control-deck > section[hidden] { display: none; }
 .control-deck .lighting-controls { grid-column: 2 / -1; grid-row: 1; }
 .lighting-controls .subject-fields { grid-template-columns: repeat(3,minmax(0,1fr)); margin: 12px 0; font-size: 12px; }
-.lighting-controls .subject-fields input { padding: 7px; border: 1px solid #a8b6a8; border-radius: 5px; font: inherit; }
+.lighting-controls .subject-fields input:not([type="range"]) { padding: 7px; border: 1px solid #a8b6a8; border-radius: 5px; font: inherit; }
 .lighting-controls input:disabled { opacity: .5; }
 .lighting-controls { font-size: 13px; }
 @media(max-width:720px) { .control-deck .lighting-controls { grid-column: 1; grid-row: auto; } .lighting-controls .subject-fields { grid-template-columns: repeat(2,minmax(0,1fr)); } }
