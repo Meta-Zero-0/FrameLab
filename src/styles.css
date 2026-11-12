@@ -49,7 +49,6 @@ code { font-size: 11px; overflow-wrap: anywhere; }
 #framing-status[data-limited="true"] { color: #752b0b; background: #ffe4c4; border-left: 4px solid #a94b10; padding: 12px; font-weight: 600; }
 .focus-controls { border-top: 1px solid #c7cec1; padding: 22px 0; margin-top: 24px; font-size: 13px; }
 #focus-distance { width: 100%; margin: 16px 0; accent-color: #b47b20; }
-#aperture { margin-left: 12px; padding: 8px; background: #fff; border: 1px solid #a8b6a8; border-radius: 6px; }
 .photo-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
 .photo-toolbar .eyebrow { margin: 0; }
 .lens-workspace.photo-expanded { grid-template-columns: minmax(0, 1fr); }
@@ -292,7 +291,7 @@ select:disabled { opacity: .55; cursor: not-allowed; }
   .control-deck > section { padding: 6px 8px; }
   .control-deck h3, .guide-section .guide-controls legend { font-size: 12px; margin-bottom: 4px; }
   .control-deck button, .control-switch button, .shot-menu > summary { font-size: 11px; min-height: 24px; padding: 2px 6px; }
-  .control-deck select, .control-deck #aperture { font-size: 11px; height: 24px; padding: 2px 6px; }
+  .control-deck select { font-size: 11px; height: 24px; padding: 2px 6px; }
   .control-deck input[type="number"], .control-deck input[type="text"] { font-size: 11px; min-height: 24px; padding: 2px 6px; }
   .control-deck .numeric-control { margin: 2px 0 0; gap: 8px; }
   .control-deck input[type="range"] { min-height: 16px; }
@@ -318,4 +317,4 @@ select:disabled { opacity: .55; cursor: not-allowed; }
 
 .exposure-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:6px 0; }
 .exposure-row label { display:flex; flex-direction:column; gap:3px; min-width:0; }
-.exposure-row select, .exposure-row #aperture { width:100%; margin:0; }
+.exposure-row select { width:100%; margin:0; }

@@ -28,6 +28,7 @@
 .control-switch { background: var(--revamp-page); border-top: var(--revamp-divider-width) solid var(--revamp-dark-edge); }
 .control-switch button[aria-pressed="true"] { background: var(--revamp-green); }
 .app .header button, .control-switch button, .control-switch .shot-menu > summary { font-size: var(--control-text-size); font-weight: 400; }
+.setup-menu-toggle { display: none; }
 
 .control-deck {
   --deck-gutter: 10px;
@@ -60,8 +61,7 @@
   font-size: var(--control-text-size);
 }
 .control-deck :is(label, button, select, .numeric-control, .select-row, .control-help, .secondary-controls),
-.control-deck input:is([type="number"], [type="text"]),
-.control-deck #aperture {
+.control-deck input:is([type="number"], [type="text"]) {
   font-size: var(--control-text-size);
   font-weight: 400;
 }
@@ -172,7 +172,6 @@
   background: url('/figma-revamp/select-arrow.svg') right 9px center no-repeat,
     linear-gradient(to left, var(--revamp-green) 26px, #d7f3e6 26px);
 }
-.control-deck .exposure-row #aperture { padding-right: 29px; }
 .control-deck button:not(.light-legend button) { border-color: var(--revamp-green); }
 .control-deck :is(#fit-subject, #focus-target, #import-glb) { background: var(--revamp-green); color: #fff; }
 .control-deck :is(#fit-subject, #focus-target, #import-glb):hover { background: #2b5040; }
@@ -226,7 +225,9 @@
   );
   background: linear-gradient(to right, #edf8f3, #d7eee4);
 }
-.triangle-marker { position: absolute; z-index: 1; width: 13px; height: 13px; border: 2px solid white; border-radius: 50%; background: #234f3a; box-shadow: 0 1px 3px #0006; transform: translate(-50%, -50%); pointer-events: none; }
+/* The inner triangle joins the centres of the three 8px corner arcs. */
+.triangle-marker-area { position: absolute; z-index: 1; inset: 16px 13.856px 8px; pointer-events: none; }
+.triangle-marker { position: absolute; width: 13px; height: 13px; border: 2px solid white; border-radius: 50%; background: #234f3a; box-shadow: 0 1px 3px #0006; transform: translate(-50%, -50%); }
 .triangle-base { display: flex; justify-content: space-between; margin: 7px 0; }
 .exposure-row { grid-template-columns: minmax(0, 1fr); margin-top: 8px; }
 .exposure-setting { display: grid; grid-template-columns: 76px minmax(32px, 1fr) minmax(72px, 85px); gap: 6px; align-items: center; }
@@ -250,6 +251,24 @@
 }
 @media (max-width: 850px) {
   .app .header { padding-inline: 10px; }
+  .setup-menu { position: relative; }
+  .setup-menu-toggle { display: grid; place-items: center; width: 44px; height: 44px; }
+  .setup-menu-toggle span { width: 16px; height: 2px; border-radius: 1px; background: currentColor; box-shadow: 0 -5px currentColor, 0 5px currentColor; }
+  .setup-menu-toggle[aria-expanded="true"] { background: var(--revamp-green); border-color: var(--revamp-green); color: #fff; }
+  .setup-menu .setup-actions {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 148px;
+    padding: 6px;
+    border: 1px solid var(--revamp-border);
+    border-radius: 8px;
+    background: var(--revamp-card);
+    box-shadow: var(--revamp-shadow);
+  }
+  .setup-menu-toggle[aria-expanded="true"] + .setup-actions { display: grid; }
+  .setup-menu .setup-actions button { min-height: 44px; text-align: left; }
   .mode-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .control-deck .exposure-controls { grid-column: 1 / -1; }
 }

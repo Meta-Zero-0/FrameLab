@@ -1,5 +1,6 @@
 import { connectStudioControls } from './ui/connectStudioControls.js';
 import { connectSetupFiles } from './ui/connectSetupFiles.js';
+import { connectSetupMenu } from './ui/connectSetupMenu.js';
 import { connectLighting } from './ui/connectLighting.js';
 import { connectTooltips } from './ui/connectTooltips.js';
 import { connectComparison } from './ui/connectComparison.js';
@@ -26,6 +27,7 @@ import { connectShootPlan } from './ui/connectShootPlan.js';
 import { Box3, Vector3 } from 'three';
 
 try {
+  connectSetupMenu();
   // Both renderers use this SAME scene, so edits appear in both views.
   const { scene, subject, props, grid, floor, key, ambient } = createFoundationScene(sceneLayout);
   const gridToggle = document.querySelector('#show-grid');

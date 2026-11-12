@@ -8,7 +8,19 @@
 </head>
 <body>
   <main class="app">
-    <header class="header"><h1><img class="brand-logo" src="./framelab-logo.svg" alt="FrameLab" width="138" height="32" /></h1><div class="setup-actions"><button id="save-setup" type="button">Save setup</button><button id="open-setup" type="button">Open setup</button><input id="setup-file" type="file" accept=".json,.framelab,application/json" hidden /><button id="reset-all" type="button">Reset all</button></div></header><p id="setup-status" role="status" class="guide-note"></p>
+    <header class="header">
+      <h1><img class="brand-logo" src="./framelab-logo.svg" alt="FrameLab" width="138" height="32" /></h1>
+      <div class="setup-menu">
+        <button class="setup-menu-toggle" type="button" aria-label="Project actions" aria-controls="setup-actions" aria-expanded="false"><span aria-hidden="true"></span></button>
+        <div class="setup-actions" id="setup-actions">
+          <button id="save-setup" type="button">Save setup</button>
+          <button id="open-setup" type="button">Open setup</button>
+          <input id="setup-file" type="file" accept=".json,.framelab,application/json" hidden />
+          <button id="reset-all" type="button">Reset all</button>
+        </div>
+      </div>
+    </header>
+    <p id="setup-status" role="status" class="guide-note"></p>
     <p id="scene-error" role="alert" hidden></p>
     <div class="workspace lens-workspace">
       <section id="overview-panel" class="viewport" aria-label="Studio overview">
