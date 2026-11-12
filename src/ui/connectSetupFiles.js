@@ -63,10 +63,10 @@ export function connectSetupFiles({subjects,snapshot,restore}) {
  let shots=[],activeShotId=null;
  const menu=document.createElement('details');menu.className='shot-menu';
  menu.innerHTML='<summary>Shots (0)</summary><div class="shot-popover"><label>Saved shot<select id="shot-select" aria-label="Saved shot"></select></label><label>Shot name<input id="shot-name" maxlength="80" placeholder="e.g. Portrait A" /></label><div class="shot-actions"><button type="button" id="shot-new">Save as new</button><button type="button" id="shot-load">Load</button><button type="button" id="shot-update">Update</button><button type="button" id="shot-rename">Rename</button><button type="button" id="shot-delete">Delete</button><button type="button" id="shot-undo" hidden>Undo delete</button></div><p class="guide-note">Edits to the active shot are kept when switching. Save project downloads all shots; reload clears shots that have not been downloaded.</p><p id="shot-status" role="status" class="guide-note"></p></div>';
- document.querySelector('.control-switch').append(menu);
  const noteMenu=document.createElement('details');noteMenu.className='shot-menu shoot-notes-menu';
  noteMenu.innerHTML='<summary>Shoot notes</summary><div class="shot-popover"><p data-note-shot class="guide-note"></p><div data-note-fields></div><p class="guide-note">Notes belong to the current working shot and appear in its shoot plan. Save project to keep them after closing.</p></div>';
- document.querySelector('.control-switch').append(noteMenu);
+ menu.name = noteMenu.name = 'project-shot-tools';
+ document.querySelector('.setup-actions').append(menu,noteMenu);
  const noteInputs={};
  for(const [key,label] of Object.entries(noteLabels)){
    const wrapper=document.createElement('label');wrapper.textContent=label;
@@ -153,6 +153,7 @@ export function connectSetupFiles({subjects,snapshot,restore}) {
   busy=value;
   byId('save-setup').disabled=byId('open-setup').disabled=byId('reset-all').disabled=value;
   document.querySelector('.workspace').inert=value;
+  menu.inert=noteMenu.inert=value;
   document.querySelector('#comparison-status').closest('section').inert=value;
  }
  byId('save-setup').dataset.help='Download the current setup and all named shots, including their imported models. A/B photographs are separate.';

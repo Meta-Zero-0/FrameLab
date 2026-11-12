@@ -13,9 +13,16 @@ export function connectWorkspaceControls() {
   splitter.setAttribute('aria-valuemin', '25');
   splitter.setAttribute('aria-valuemax', '75');
   splitter.title = 'Drag to resize views. Arrow keys adjust; double-click to reset.';
+  const handle = document.createElement('img');
+  handle.className = 'view-splitter-handle';
+  handle.src = `${import.meta.env.BASE_URL}figma-revamp/view-splitter-handle.svg`;
+  handle.alt = '';
+  handle.draggable = false;
+  splitter.append(handle);
   workspace.append(splitter);
   let share = 50;
   let pointer = null;
+  let grabOffset = 0;
   let pending = null;
   let frame = 0;
   function setSplit(value) {
@@ -40,6 +47,8 @@ export function connectWorkspaceControls() {
     if (!event.isPrimary || event.button !== 0) return;
     event.preventDefault();
     pointer = event.pointerId;
+    const bounds = splitter.getBoundingClientRect();
+    grabOffset = event.clientX - (bounds.left + bounds.width / 2);
     splitter.setPointerCapture(pointer);
     splitter.focus({preventScroll:true});
     workspace.classList.add('resizing-views');
@@ -47,7 +56,7 @@ export function connectWorkspaceControls() {
   splitter.addEventListener('pointermove', event => {
     if (event.pointerId !== pointer) return;
     const rect = workspace.getBoundingClientRect();
-    pending = (event.clientX - rect.left - workspace.clientLeft) / workspace.clientWidth * 100;
+    pending = (event.clientX - grabOffset - rect.left - workspace.clientLeft) / workspace.clientWidth * 100;
     if (!frame) frame = requestAnimationFrame(flushSplit);
   });
   for (const event of ['pointerup', 'pointercancel', 'lostpointercapture']) splitter.addEventListener(event, stopDrag);

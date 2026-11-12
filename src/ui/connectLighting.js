@@ -8,10 +8,29 @@ import { Group, Mesh, SphereGeometry, MeshBasicMaterial, BufferGeometry, Line, L
 
 export function connectLighting(scene, key, ambient, subject, photoCamera) {
   const deck = document.querySelector('.control-deck');
-  const switcher = document.createElement('div'); switcher.className = 'control-switch'; switcher.setAttribute('aria-label', 'Control workspace');
-  switcher.innerHTML = '<button type="button" data-mode="camera" aria-pressed="true">Camera</button><button type="button" data-mode="lighting" aria-pressed="false">Lighting</button><button type="button" data-mode="studio" aria-pressed="false">Studio</button>';
+  const modes = {camera: 'Camera', lighting: 'Lighting', studio: 'Studio'};
+  const switcher = document.createElement('div');
+  switcher.className = 'mode-switcher';
+  switcher.innerHTML = '<p class="mode-label">Mode: Camera</p><div class="mode-buttons" role="group" aria-label="Workspace mode"></div>';
+  const modeLabel = switcher.querySelector('.mode-label');
+  const modeButtons = switcher.querySelector('.mode-buttons');
+  for (const [mode, name] of Object.entries(modes)) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.mode = mode;
+    button.setAttribute('aria-label', name);
+    button.setAttribute('aria-pressed', String(mode === 'camera'));
+    for (const active of [false, true]) {
+      const icon = document.createElement('img');
+      icon.alt = '';
+      icon.src = `${import.meta.env.BASE_URL}figma-revamp/mode-${mode}${active ? '-active' : ''}.svg`;
+      button.append(icon);
+    }
+    button.addEventListener('click', () => setMode(mode));
+    modeButtons.append(button);
+  }
   deck.before(switcher);
-  const equipmentSummary = document.createElement('p'); equipmentSummary.className = 'equipment-summary guide-note'; equipmentSummary.setAttribute('role','status'); switcher.after(equipmentSummary);
+  const equipmentSummary = document.createElement('p'); equipmentSummary.className = 'equipment-summary guide-note'; equipmentSummary.setAttribute('role','status'); deck.before(equipmentSummary);
   const panel = document.createElement('section'); panel.className = 'lighting-controls'; panel.hidden = true;
   panel.innerHTML = '<h3>Studio lights</h3><label>Preset <select id="lighting-preset"></select></label> <button id="apply-lighting-preset" type="button">Apply preset</button><p id="lighting-preset-note" class="guide-note" role="status"></p><div id="light-legend" class="light-legend"></div><p id="light-role" class="guide-note"></p><label>Light colour <input id="light-colour" type="color" value="#ffffff" /></label><label>Light model <select id="light-model"><option value="studio">Studio / distance falloff</option><option value="directional">Directional / no falloff</option></select></label><label>Source <select id="light-source"><option value="soft">Soft source</option><option value="hard">Hard source</option></select></label><p id="light-model-note" class="guide-note"></p><label><input id="key-enabled" type="checkbox" checked /> Selected light on</label><div id="light-fields" class="subject-fields"></div><p><label><input id="light-follow" type="checkbox" checked /> Aim at subject region</label></p><div id="aim-fields" class="subject-fields"></div><p><label><input id="light-marker" type="checkbox" checked /> Show all light markers</label></p><button id="reset-lighting" type="button">Reset lighting</button><p id="light-status" role="status" class="guide-note"></p>';
   deck.append(panel);
@@ -250,9 +269,11 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
     panel.hidden = mode !== 'lighting';
     const studioPanel = deck.querySelector('.studio-controls');
     if (studioPanel) studioPanel.hidden = mode !== 'studio';
-    switcher.querySelectorAll('button[data-mode]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.mode === mode)));
+    modeLabel.textContent = `Mode: ${modes[mode]}`;
+    for (const button of modeButtons.children) {
+      button.setAttribute('aria-pressed', String(button.dataset.mode === mode));
+    }
   }
-  switcher.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.mode)));
   function reset() {
     saved = Object.fromEntries(Object.entries(initial).map(([name,values])=>[name,{values:{...values},enabled:true,follow:true,mode:'studio',source:'soft',customColour:false,colour:'#ffffff'}]));
     saved.background = backgroundState();
