@@ -323,7 +323,8 @@
   .setup-menu .shot-menu > summary { padding-block: 13px; }
   .setup-menu .shot-popover { position: static; width: auto; max-height: none; box-shadow: none; }
   .mode-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .control-deck .exposure-controls { grid-column: 1 / -1; }
+  .control-deck :is(.exposure-controls, .lens-details-card) { grid-column: 1 / -1; }
+  .focus-stack { grid-template-rows: auto 1fr; }
 }
 @media (max-width: 560px) {
   .mode-controls, .workspace-guides { grid-template-columns: minmax(0, 1fr); }

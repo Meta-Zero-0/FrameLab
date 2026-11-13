@@ -70,7 +70,7 @@ export function organizeControls() {
   group(focus, 'Depth of field', [...focus.querySelectorAll('dl, .control-help')]);
   const lensPresets = card('Lens presets', 'lens-presets-card');
   lensPresets.append(presets);
-  const lensDetailsCard = document.createElement('section'); lensDetailsCard.className = 'lens-details-card';
+  const lensDetailsCard = document.createElement('section'); lensDetailsCard.className = 'lens-details-card camera-only';
   lensDetailsCard.setAttribute('aria-label', 'Lens details');
   lensDetailsCard.append(lensInfo, lensHelp);
   const focusStack = document.createElement('div'); focusStack.className = 'focus-stack camera-only';
@@ -121,6 +121,13 @@ export function organizeControls() {
   modeControls.className = 'mode-controls';
   side.before(modeControls);
   modeControls.append(camera, focusStack, exposure, find('.lighting-controls'), studio);
+  const mobileLayout = window.matchMedia('(max-width: 850px)');
+  function placeLensDetails() {
+    if (mobileLayout.matches) exposure.after(lensDetailsCard);
+    else focusStack.append(lensDetailsCard);
+  }
+  placeLensDetails();
+  mobileLayout.addEventListener('change', placeLensDetails);
   const logo = find('.brand-logo');
   logo.src = `${import.meta.env.BASE_URL}figma-revamp/wordmark.svg`;
   const lensDetails = [...lensInfo.children];
