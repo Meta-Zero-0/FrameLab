@@ -135,7 +135,7 @@
 .control-deck .subject-controls {
   grid-column: 1 / -1;
   color: #f1f4eb;
-  background: transparent;
+  background: var(--revamp-dark-card);
   box-shadow: none;
 }
 .control-deck .subject-controls > h3:first-child {

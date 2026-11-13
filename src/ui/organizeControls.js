@@ -128,8 +128,6 @@ export function organizeControls() {
   }
   placeLensDetails();
   mobileLayout.addEventListener('change', placeLensDetails);
-  const logo = find('.brand-logo');
-  logo.src = `${import.meta.env.BASE_URL}figma-revamp/wordmark.svg`;
   const lensDetails = [...lensInfo.children];
   for (const [index, detail] of lensDetails.slice(1).entries()) {
     const divider = document.createElement('img');
