@@ -33,5 +33,28 @@ export function connectBlackFlag(scene, subject) {
   function restore(value){if(!collection.selected)return;collection.selected.state=flag.apply(value);collection.refresh();sync();}
   section.querySelector('[data-enabled]').addEventListener('change',e=>restore({...flag.snapshot(),enabled:e.target.checked}));
   section.querySelector('[data-reset]').addEventListener('click',()=>restore({...defaultFlag,enabled:flag.snapshot().enabled}));
-  sync();return {snapshot:()=>flag.snapshot(),snapshotAll:collection.snapshot,restore:(legacy,items)=>collection.restore(items,legacy),reset:collection.reset,tick:orbit.sync};
+  const overviewItems = flags.map(({panel, support}, index) => ({
+    colour: '#8f77b0',
+    label: () => collection.items[index]?.name,
+    identity: () => collection.items[index],
+    position: panel.position,
+    floorPosition: () => support.base.toArray(),
+    objects: () => [panel, support.group],
+    select: () => collection.select(index),
+    yaw: () => collection.items[index].state.yaw,
+    rotate(yaw) {
+      collection.select(index);
+      restore({...flag.snapshot(), yaw});
+    },
+    move({x, z}) {
+      collection.select(index);
+      restore({...flag.snapshot(), x: clampFlagAxis('x', x), z: clampFlagAxis('z', z)});
+    },
+  }));
+  sync();return {overviewItems,snapshot:()=>flag.snapshot(),snapshotAll:collection.snapshot,restore:(legacy,items)=>collection.restore(items,legacy),reset:collection.reset,tick:orbit.sync};
+}
+
+function clampFlagAxis(axis, value) {
+  const [min, max] = flagRanges[axis];
+  return Math.max(min, Math.min(max, value));
 }

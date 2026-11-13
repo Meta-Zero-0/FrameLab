@@ -23,6 +23,7 @@
 .header .brand-logo { width: auto; height: auto; }
 .lens-workspace { border: 0; border-radius: 0; overflow: clip; }
 .lens-workspace::before { background: linear-gradient(136deg, #161414 16%, #272229 84%); }
+#scene:focus-visible { outline: 2px solid var(--revamp-green); outline-offset: -2px; }
 .lens-workspace .view-splitter::before { width: var(--revamp-divider-width); background: var(--revamp-dark-edge); }
 .view-splitter-handle {
   position: absolute;

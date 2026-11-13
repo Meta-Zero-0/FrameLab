@@ -158,8 +158,31 @@ export function createMeshReflector({scene,subject,overview,photo,production=fal
  };
  document.addEventListener('visibilitychange',()=>{if(measurement&&document.hidden)endMeasurement('Comparison cancelled: keep the tab visible.');});
  window.addEventListener('resize',()=>{if(measurement)endMeasurement('Comparison cancelled: viewport changed.');});
+ const overviewItems = models.map(({board, support}, index) => ({
+  colour: '#4f9a7d',
+  label: () => collection.items[index]?.name,
+  identity: () => collection.items[index],
+  position: board.position,
+  floorPosition: () => support.base.toArray(),
+  objects: () => [board, support.group],
+  select: () => collection.select(index),
+  yaw: () => collection.items[index].state.yaw,
+  rotate(yaw) {
+   collection.select(index);
+   values.yaw = yaw;
+   place();
+   invalidate();
+  },
+  move({x, z}) {
+   collection.select(index);
+   values.x = Math.max(Number(inputs.x.min), Math.min(Number(inputs.x.max), x));
+   values.z = Math.max(Number(inputs.z.min), Math.min(Number(inputs.z.max), z));
+   place();
+   invalidate();
+  },
+ }));
  return {
-  snapshot:()=>({...values}),snapshotAll:collection.snapshot,restore,reset:collection.reset,
+  overviewItems,snapshot:()=>({...values}),snapshotAll:collection.snapshot,restore,reset:collection.reset,
   begin(){if(measurement){frameStart=performance.now();renderers.forEach(r=>r.info.reset());}},
   end(){
    if(!measurement)return;const now=performance.now();

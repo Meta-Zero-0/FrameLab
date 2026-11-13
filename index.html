@@ -25,8 +25,8 @@
     <div class="workspace lens-workspace">
       <section id="overview-panel" class="viewport" aria-label="Studio overview">
         <div class="viewport-label"><span class="dot"></span> Studio overview</div>
-        <canvas id="scene" aria-label="Interactive overview of the shared scene"></canvas><div id="reference-labels" aria-hidden="true"></div>
-        <div class="viewport-footer"><span>Drag to orbit / Scroll to zoom · Grid: 1 m</span><button id="reset-view" type="button">Reset view</button></div>
+        <canvas id="scene" tabindex="0" aria-describedby="overview-interaction" aria-label="Interactive overview of the shared scene"></canvas><div id="reference-labels" aria-hidden="true"></div>
+        <div class="viewport-footer"><span id="overview-interaction" role="status">Drag to orbit · Scroll to zoom · Click equipment to move it</span><button id="reset-view" type="button">Reset view</button></div>
       </section>
       <section class="photo-panel" aria-label="Camera workspace">
         <div id="photo-frame">
@@ -41,7 +41,7 @@
         <section class="subject-controls" aria-label="Subject">
           <h3>Subject</h3>
           <label for="subject-type">Model</label>
-          <select id="subject-type"><option value="cube">Learning cube</option><option value="product">Product / bottle</option><option value="human">Human / mannequin</option><option id="import-option" value="import" disabled>Imported GLB</option></select>
+          <select id="subject-type"><option value="cube">Cube</option><option value="product">Product / bottle</option><option value="human">Human / mannequin</option><option id="import-option" value="import" disabled>Imported GLB</option></select>
           <div id="human-options" hidden>
             <label for="subject-pose">Pose</label><select id="subject-pose"><option value="standing">Standing</option><option value="arms-out">Arms out</option><option value="seated">Seated</option></select>
             <label for="subject-region">Frame</label><select id="subject-region"><option value="full">Full body</option><option value="shoulders">Head and shoulders</option><option value="head">Headshot</option></select>
@@ -99,7 +99,7 @@
             <label><input id="show-dof-guides" type="checkbox" /><span class="guide-key dof-key"></span> Near and far sharpness limits</label>
             <details class="control-help"><summary>Guide colours</summary><p class="guide-note">Amber is the focus distance. The space between the green outlines is the calculated acceptable sharpness range; sharpness changes gradually, not at a hard edge.</p></details>
             <p id="dof-guide-status" class="guide-note" role="status"></p>
-          </fieldset></section><section class="scene-references" aria-label="Scene references"><h3>Scene references</h3><label><input id="show-prop-labels" type="checkbox" checked /> Show prop labels</label><details class="control-help"><summary>Distance measurements</summary><p class="guide-note">Depths use object centres, measured along the photographic camera viewing direction. Subject means the centre of the whole selected model, not the focus plane. Toggles hide props in both views.</p></details><div id="reference-list"></div></section>
+          </fieldset></section><section class="scene-references" aria-label="Scene references"><h3>Scene references</h3><label><input id="show-prop-labels" type="checkbox" /> Show prop distance indicators</label><details class="control-help"><summary>Distance measurements</summary><p class="guide-note">Depths use object centres, measured along the photographic camera viewing direction. Subject means the centre of the whole selected model, not the focus plane. Toggles hide props in both views.</p></details><div id="reference-list"></div></section>
 </div>
       </section>
     </div>

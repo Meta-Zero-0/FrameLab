@@ -138,7 +138,7 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
     group.add(bulb,line,tag); group.traverse(object=>object.layers.set(1)); scene.add(group);
     const button = document.createElement('button'); button.type = 'button'; button.style.setProperty('--light-colour',colour);
     button.dataset.help = roleHelp[name];
-    button.addEventListener('click',()=>{ save(); load(name); }); byId('light-legend').append(button);
+    button.addEventListener('click', () => selectLight(name)); byId('light-legend').append(button);
     markers[name] = {group,bulb,line,tag,button};
   }
   function updateMarkers() {
@@ -162,6 +162,9 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
   function backgroundState() { return {values:{...defaults,'light-x':1.2,'light-y':2.2,'light-z':-2.5,'light-aim-x':0,'light-aim-y':1.8,'light-aim-z':0,'light-intensity':8,'light-beam':100}, enabled:false,follow:false,mode:'studio',source:'hard',customColour:false,colour:'#ffffff'}; }
   let saved = {};
   function save() { saved[selected] = { name:byId('light-name').value.trim().slice(0,60)||identities[selected][0], values: {...accepted}, enabled: byId('key-enabled').checked, follow: byId('light-follow').checked, mode: byId('light-model').value, source: byId('light-source').value, modifier: byId('light-modifier').value, modifierRotation, support: byId('light-support').value, customColour, colour: byId('light-colour').value }; }
+  function selectLight(name) {
+    if (name !== selected) { save(); load(name); }
+  }
   byId('light-name').addEventListener('change',()=>{save();byId('light-name').value=saved[selected].name;updateMarkers();});
   function applyOtherLights() {
     for (const [name, state] of Object.entries(saved)) {
@@ -303,7 +306,28 @@ export function connectLighting(scene, key, ambient, subject, photoCamera) {
     describePreset(); byId('lighting-preset-note').textContent += ' Applied. You can now adjust each light.';
   });
   byId('reset-lighting').addEventListener('click',reset); reset();
-  return { reset, setMode, equipmentReports: equipment.reports, setStudio(value) { equipment.setStudio(value); syncEmitters(); }, restore(states,marker) { saved=structuredClone(states); byId('light-marker').checked=marker; load('key'); byId('lighting-preset-note').textContent='Saved lighting restored. The preset menu is available for a new arrangement.'; }, snapshot() { save(); return structuredClone(saved); }, tick() { applyOtherLights(); syncEmitters(); updateMarkers(); if(byId('light-follow').checked) { subject().getCenter(target); if(!target.equals(last)) update(); } } };
+  const overviewItems = Object.entries(lights).map(([name, light]) => {
+    const marker = markers[name];
+    return {
+      colour: identities[name][1],
+      label: () => saved[name]?.name || identities[name][0],
+      identity: () => light,
+      position: light.position,
+      floorPosition: () => equipment.reports()[name]?.base ?? light.position.toArray(),
+      marker: () => marker.group.visible ? [marker.bulb, marker.tag] : [],
+      objects: () => [equipment.object(name)],
+      select: () => selectLight(name),
+      move(placement) {
+        selectLight(name);
+        for (const [axis, value] of Object.entries(placement)) {
+          const input = byId(`light-${axis}`);
+          input.value = Math.max(Number(input.min), Math.min(Number(input.max), value));
+        }
+        update();
+      },
+    };
+  });
+  return { reset, setMode, overviewItems, equipmentReports: equipment.reports, setStudio(value) { equipment.setStudio(value); syncEmitters(); }, restore(states,marker) { saved=structuredClone(states); byId('light-marker').checked=marker; load('key'); byId('lighting-preset-note').textContent='Saved lighting restored. The preset menu is available for a new arrangement.'; }, snapshot() { save(); return structuredClone(saved); }, tick() { applyOtherLights(); syncEmitters(); updateMarkers(); if(byId('light-follow').checked) { subject().getCenter(target); if(!target.equals(last)) update(); } } };
 }
 
 

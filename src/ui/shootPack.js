@@ -17,7 +17,7 @@ function savedPlan(shot,date) {
   const travel=createCameraTravel(camera,sceneLayout.photoView.target);travel.setTilt(s.cameraTilt??travel.initialTilt);travel.target.fromArray(s.target);travel.setDistance(Number(f['camera-distance']));
   if(g){camera.position.fromArray(g.camera);camera.lookAt(travel.target);camera.updateMatrixWorld(true);}
   const centre=[Number(f['subject-x']),Number(f['subject-height'])/2,Number(f['subject-z'])];
-  const names={cube:'Learning cube',product:'Product / bottle',human:'Human / mannequin',import:s.model?.name||'Imported GLB'};
+  const names={cube:'Cube',product:'Product / bottle',human:'Human / mannequin',import:s.model?.name||'Imported GLB'};
   const aim=g?.aim||[s.lights.key.values['light-aim-x'],s.lights.key.values['light-aim-y'],s.lights.key.values['light-aim-z']];
   // Build only equipment geometry for support placement; no renderers, model import or bounce work.
   const scene=new Scene(),lights={};

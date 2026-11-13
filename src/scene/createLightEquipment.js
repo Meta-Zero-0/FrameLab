@@ -76,5 +76,6 @@ export function createLightEquipment(scene, camera) {
         baseInFrame: plan.baseFrameLength > 0, supportInFrame: plan.frameLength > 0, headInFrame: frustum.intersectsBox(headBounds), outside: outsideStudio(bounds.min, bounds.max, studio), bounds };
     }
   }
-  return { update, setStudio(value) { studio = { ...value }; lastKey = ''; }, reports: () => reports };
+  return { update, setStudio(value) { studio = { ...value }; lastKey = ''; }, reports: () => reports,
+    object: name => equipment.get(name)?.root };
 }

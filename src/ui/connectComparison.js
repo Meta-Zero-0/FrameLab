@@ -9,7 +9,7 @@ export function connectComparison(photo, resetScene, lighting) {
     ['subject-type','Subject',''], ['subject-pose','Pose',''], ['subject-region','Framing region',''],
     ['subject-height','Height',' m'], ['subject-x','Subject X',' m'], ['subject-z','Subject Z',' m'], ['subject-yaw','Rotation',' degrees'],
     ['maintain-framing','Maintain framing',''], ['follow-focus','Follow focus',''], ['visual-blur','Approximate blur',''],
-    ['show-grid','Grid',''], ['show-prop-labels','Labels',''], ['show-camera-guides','Camera guide',''], ['show-focus-plane','Focus plane',''], ['show-dof-guides','Sharpness guides',''],
+    ['show-grid','Grid',''], ['show-prop-labels','Prop distance indicators',''], ['show-camera-guides','Camera guide',''], ['show-focus-plane','Focus plane',''], ['show-dof-guides','Sharpness guides',''],
   ];
   function settings() {
     const values = fields.filter(([id]) => !['subject-pose','subject-region'].includes(id) || document.querySelector('#subject-type').value === 'human').map(([id,label,unit]) => {

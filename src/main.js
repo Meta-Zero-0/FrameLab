@@ -2,6 +2,7 @@ import { connectStudioControls } from './ui/connectStudioControls.js';
 import { connectSetupFiles } from './ui/connectSetupFiles.js';
 import { connectSetupMenu } from './ui/connectSetupMenu.js';
 import { connectLighting } from './ui/connectLighting.js';
+import { connectOverviewPlacement } from './ui/connectOverviewPlacement.js';
 import { connectTooltips } from './ui/connectTooltips.js';
 import { connectComparison } from './ui/connectComparison.js';
 import { connectNumberInput } from './ui/connectNumberInput.js';
@@ -189,6 +190,9 @@ try {
   const studio=connectStudioControls({floor,grid,wall:props[2],subject,camera:photo.camera,lighting,cameraEquipment:guides.equipment});
   const meshReflector=createMeshReflector({scene,subject,overview,photo,production:true});
   const blackFlag=connectBlackFlag(scene,subjects.bounds);
+  const placement = connectOverviewPlacement({scene, overview,
+    items: [...lighting.overviewItems, ...meshReflector.overviewItems, ...blackFlag.overviewItems],
+  });
   connectComparison(photo, () => {
     // Restore form defaults first, then synchronize the actual scene and renderers.
     document.querySelectorAll('.photo-panel input:not([type="file"])').forEach(input => {
@@ -209,6 +213,7 @@ try {
     maintain.dispatchEvent(new Event('change'));
     for (const id of ['show-grid','show-camera-guides','show-focus-plane','show-dof-guides','show-prop-labels']) document.getElementById(id).dispatchEvent(new Event('input'));
     document.querySelectorAll('#reference-list input').forEach(input => { input.checked = true; input.dispatchEvent(new Event('change')); });
+    placement.clear();
     overview.controls.reset(); workspace.reset(); studio.reset(); lighting.reset(); meshReflector.reset(); blackFlag.reset(); lighting.setMode('camera');
     setupFiles.resetNotes();
     document.querySelector('#subject-status').textContent = 'Starting subject restored. Size, placement and rotation update it live.';
@@ -218,6 +223,7 @@ try {
   const setupFiles=connectSetupFiles({subjects,
     snapshot:()=>({exposure:{iso:Number(document.querySelector('#camera-iso').value),shutter:Number(document.querySelector('#camera-shutter').value)},planGeometry:capturePlanGeometry(),flags:blackFlag.snapshotAll(),reflectors:meshReflector.snapshotAll(),blackFlag:blackFlag.snapshot(),cameraTilt:travel.getTilt(),reflector:meshReflector.snapshot(),orientation:orientation.value,aspectRatio:aspectRatio.value,studio:studio.snapshot(),target:travel.target.toArray(),lights:lighting.snapshot(),markers:document.querySelector('#light-marker').checked,props:props.map(p=>p.visible),lock:(lock.snapshot().occupancy ? lock.snapshot() : (lock.capture(Number(focalLength.value),Number(distance.value)),lock.snapshot())),overview:{position:overview.camera.position.toArray(),target:overview.controls.target.toArray()}}),
     restore(data) {
+      placement.clear();
       document.querySelector('#camera-iso').value=data.exposure.iso;
       document.querySelector('#camera-shutter').value=data.exposure.shutter;
       studio.restore(data.studio);
@@ -279,6 +285,7 @@ try {
     references.update();
     meshReflector?.tick();
     blackFlag.tick();
+    placement.tick();
     overview.renderer.render(scene, overview.camera);
     photo.render();
     reflectorPerformance?.end();

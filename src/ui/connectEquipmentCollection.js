@@ -16,7 +16,12 @@ export function connectEquipmentCollection({parent,type,onChange}) {
     toolbar.querySelector('[data-remove]').disabled=!items.length;
   }
   function notify(reason){refresh();onChange(reason);}
-  select.addEventListener('change',()=>{index=Number(select.value);notify('select');});
+  function selectItem(next) {
+    if (!items[next] || next === index) return;
+    index = next;
+    notify('select');
+  }
+  select.addEventListener('change',()=>selectItem(Number(select.value)));
   name.addEventListener('change',()=>{if(items[index]&&name.value.trim()){items[index].name=name.value.trim().slice(0,60);notify('rename');}else refresh();});
   toolbar.querySelector('[data-add]').addEventListener('click',()=>{
     if(items.length>=limit)return;
@@ -33,7 +38,7 @@ export function connectEquipmentCollection({parent,type,onChange}) {
   toolbar.querySelector('[data-remove]').addEventListener('click',()=>{items.splice(index,1);index=Math.max(0,Math.min(index,items.length-1));notify('remove');});
   refresh();
   return {toolbar,get items(){return items;},get index(){return index;},get selected(){return items[index];},
-    refresh,snapshot:()=>structuredClone(items),
+    refresh,select:selectItem,snapshot:()=>structuredClone(items),
     restore(value,legacy){items=validateEquipment(value,type,legacy);index=0;notify('restore');},
     reset(){items=validateEquipment(undefined,type);index=0;notify('reset');}};
 }
